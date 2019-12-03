@@ -20,32 +20,58 @@ public class readfile {
 		{	
 			line = br.readLine();
 			line = br.readLine();
-			line = br.readLine();
-			while ((line = br.readLine()) != null) 
-			{
-				if (line.contains("Var")) {
+			if (line.contains("Variables")) {
+				line=line.substring(10);
+				String Variables [];
+				Variables=line.split(",");
+				for(int i=0; i<Variables.length ;i++) {
 					var=new Var();
-					var.name=line.substring(4);
-					line = br.readLine();
-					line=line.substring(7);
-					var.values=line.split(",");
-					line = br.readLine();
-					if (line.contains("None")) {
-						line = br.readLine();
-					} else {
-						System.out.println("we are in else!!!");
-						for(int i=0;i<Net.Vars.size();i++) {
-							if (Net.Vars.get(i).name.compareTo(line.substring(8))==1)
-							{var.parents.add(Net.Vars.get(i));
-							}
-						}
-					}
-					var.print();
-					System.out.println("***********************************************");
+					var.name=Variables[i];
 					Net.Vars.add(var);
 				}
 			}
+			line = br.readLine();
+			while ((line= br.readLine()) != null) 
+			{
+				if (line.contains("Var")) {
+					String TempName=line.substring(4);
+					int  index= Net.findByName(TempName);
+					System.out.println("lfdsfdsf");
+					if (index !=-1) {
+						System.out.println("yeshhhh");
+						line = br.readLine();
+						line=line.substring(7);
+						Net.Vars.get(index).values=line.split(",");
+						line = br.readLine();
+						line=line.substring(9);
+						if (line.contains(",")){
+							String ParentTemp[]=line.split(",");
+							for (int i=0; i<ParentTemp.length;i++) {
+								int ParentsIndex=Net.findByName(ParentTemp[i]);
+								Net.Vars.get(index).parents.add(Net.Vars.get(ParentsIndex));
+								Net.Vars.get(ParentsIndex).children.add(Net.Vars.get(index));
+							}
+						}
+						else if (!line.contains("none")) {
+							int ParentIndex=Net.findByName(line);
+							Net.Vars.get(index).parents.add(Net.Vars.get(ParentIndex));
+							Net.Vars.get(ParentIndex).children.add(Net.Vars.get(index));
+						}
+					}
+					else {
+						System.err.println("invaild input");
+						System.exit(0);
+					}
 
-		} catch (IOException e) {e.printStackTrace();}
+				}
+				line=br.readLine();
+			}
+			for (int i=0;i<Net.Vars.size();i++) {
+				Net.Vars.get(i).print();}
+			System.out.println("***********************************************");
+		}
+
+		catch (IOException e) {e.printStackTrace();}
 	}
 }
+
