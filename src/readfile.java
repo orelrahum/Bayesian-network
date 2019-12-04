@@ -23,10 +23,10 @@ public class readfile {
 			if (line.contains("Variables")) {
 				line=line.substring(11);
 				String Variables [];
+				// add if
 				Variables=line.split(",");
 				for(int i=0; i<Variables.length ;i++) {
-					var=new Var();
-					var.name=Variables[i];
+					var=new Var(Variables[i]);
 					Net.Vars.add(var);
 				}
 			}
