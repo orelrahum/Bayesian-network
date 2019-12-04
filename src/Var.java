@@ -10,16 +10,21 @@ public class Var {
 	public Var(String name) {
 		this.name=name;
 	}
-	public Var() {}
+	public Var() {
+	}
+	public boolean CompareVar (Var V) {
+		if (this.name==V.name) {return true;}
+		else {return false;}
+	}
 	
 
 	public void print() {
 		System.out.println("Name: " + name);
 		System.out.print("values: ");
-//		for (String v : values) System.out.print(v + " "); System.out.print("\n");
-//		System.out.print("parents: ");
-		for (var v : parents) System.out.print(v.name + " "); System.out.print("\n");
+		for (String v : values) System.out.print(v + ","); System.out.print("\n");
+		System.out.print("parents: ");
+		for (var v : parents) System.out.print(v.name + ","); System.out.print("\n");
 		System.out.print("children: ");
-		for (var v : children) System.out.print(v.name + " "); System.out.print("\n");
+		for (var v : children) System.out.print(v.name + ","); System.out.print("\n");
 	}
 }

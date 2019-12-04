@@ -21,7 +21,7 @@ public class readfile {
 			line = br.readLine();
 			line = br.readLine();
 			if (line.contains("Variables")) {
-				line=line.substring(10);
+				line=line.substring(11);
 				String Variables [];
 				Variables=line.split(",");
 				for(int i=0; i<Variables.length ;i++) {
@@ -36,11 +36,9 @@ public class readfile {
 				if (line.contains("Var")) {
 					String TempName=line.substring(4);
 					int  index= Net.findByName(TempName);
-					System.out.println("lfdsfdsf");
 					if (index !=-1) {
-						System.out.println("yeshhhh");
 						line = br.readLine();
-						line=line.substring(7);
+						line=line.substring(8);
 						Net.Vars.get(index).values=line.split(",");
 						line = br.readLine();
 						line=line.substring(9);
@@ -57,6 +55,20 @@ public class readfile {
 							Net.Vars.get(index).parents.add(Net.Vars.get(ParentIndex));
 							Net.Vars.get(ParentIndex).children.add(Net.Vars.get(index));
 						}
+						line=br.readLine();
+						if (line.contains("CPT")){
+							line=br.readLine();
+							while(line.length()>1) {
+								if (line.contains(",")) {
+									String CTPtemp  [];
+									CTPtemp=line.split(",");
+									//need ADD code to get CPP
+									line=br.readLine();
+								}
+							}
+
+							System.out.println("CTP!!!");
+						}
 					}
 					else {
 						System.err.println("invaild input");
@@ -64,11 +76,12 @@ public class readfile {
 					}
 
 				}
-				line=br.readLine();
 			}
 			for (int i=0;i<Net.Vars.size();i++) {
-				Net.Vars.get(i).print();}
-			System.out.println("***********************************************");
+				Net.Vars.get(i).print();
+				System.out.println("***********************************************");	
+			}
+
 		}
 
 		catch (IOException e) {e.printStackTrace();}

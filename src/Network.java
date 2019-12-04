@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Iterator;
 
 public class Network {
 
@@ -12,9 +13,9 @@ public class Network {
 		return Vars.add(e);
 	}
 	
-	public int findByName(String name) {
-		for(int i=0 ; !Vars.isEmpty() ;i++) {
-			if (Vars.get(0).name==name) {
+	public int findByName(String name2) {
+		for(int i=0 ;i<Vars.size();i++) {
+			if (Vars.get(i).name.compareTo(name2)==0) {
 				return i;
 			}
 		}
