@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 
@@ -39,7 +41,11 @@ public class readfile {
 					if (index !=-1) {
 						line = br.readLine();
 						line=line.substring(8);
-						Net.Vars.get(index).values=line.split(",");
+						String TempValue [];
+						TempValue=line.split(",");
+						for (int i=0;i<TempValue.length;i++) {
+							Net.Vars.get(index).values.add(TempValue[i]);
+						}
 						line = br.readLine();
 						line=line.substring(9);
 						if (line.contains(",")){
@@ -60,14 +66,33 @@ public class readfile {
 							line=br.readLine();
 							while(line.length()>1) {
 								if (line.contains(",")) {
-									String CTPtemp  [];
-									CTPtemp=line.split(",");
+									String CTPtemp  []=line.split(",");
+									CTPParents cptParents= new CTPParents();
+									CTPValues cptValues= new CTPValues();
+									int j=0;
+									double sumProb=0;
+									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
+										String ParentName=Net.Vars.get(index).parents.get(i).name;
+										cptParents.parents_value.put(ParentName, CTPtemp[i]);
+										j++;
+									}
+									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
+										String ValueName=Net.Vars.get(index).values.get(i);
+										double ProbForVar=Double.parseDouble(CTPtemp[j+1]);
+										sumProb=+ProbForVar;
+										cptValues.value_prob.put(ValueName,ProbForVar);
+									}
+									double comp=1-sumProb;
+									double sumOfValues=Net.Vars.get(index).values.size();
+									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
+									cptValues.value_prob.put(LastValueName,sumOfValues);
+									
 									//need ADD code to get CPP
 									line=br.readLine();
+									Net.Vars.get(index).cpt.parents_values.add(cptParents);
+									Net.Vars.get(index).cpt.values_prob.add(cptValues);
 								}
 							}
-
-							System.out.println("CTP!!!");
 						}
 					}
 					else {

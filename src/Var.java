@@ -3,9 +3,10 @@ import java.util.ArrayList;
 
 public class Var {
 	public String name;
-	public String[] values;
+	public ArrayList<String> values = new ArrayList<String>();
 	public ArrayList<Var> parents = new ArrayList<Var>();
 	public ArrayList<Var> children = new ArrayList<Var>();
+	public CPT cpt=new CPT();
 	
 	public Var(String name) {
 		this.name=name;
@@ -26,5 +27,6 @@ public class Var {
 		for (var v : parents) System.out.print(v.name + ","); System.out.print("\n");
 		System.out.print("children: ");
 		for (var v : children) System.out.print(v.name + ","); System.out.print("\n");
+		cpt.print();
 	}
 }
