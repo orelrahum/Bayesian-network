@@ -79,18 +79,18 @@ public class readfile {
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
 										String ValueName=Net.Vars.get(index).values.get(i);
 										double ProbForVar=Double.parseDouble(CTPtemp[j+1]);
+										ProbForVar=General.round(ProbForVar);
 										sumProb=+ProbForVar;
 										cptValues.value_prob.put(ValueName,ProbForVar);
 									}
 									double comp=1-sumProb;
+									comp=General.round(comp);
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
 									cptValues.value_prob.put(LastValueName,comp);
-									
-									//need ADD code to get CPP
-									line=br.readLine();
 									Net.Vars.get(index).cpt.parents_values.add(cptParents);
 									Net.Vars.get(index).cpt.values_prob.add(cptValues);
+									line=br.readLine();
 								}
 							}
 						}

@@ -70,6 +70,4 @@ public class Network {
 		return Vars.removeAll(c);
 	}
 
-
-
 }

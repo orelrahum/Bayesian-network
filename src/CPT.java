@@ -16,8 +16,10 @@ public class CPT {
 	public CPT() {}
 
 	public void print() {
-		for (CTPParents v : parents_values) {System.out.print(v.parents_value);
-		for (CTPValues z : values_prob) {System.out.println(z.value_prob);}}
-
+		for(int i=0;i<this.values_prob.size();i++) {
+			System.out.print(this.parents_values.get(i).parents_value);
+			System.out.println(this.values_prob.get(i).value_prob);
+		}
+	
 	}
 }
