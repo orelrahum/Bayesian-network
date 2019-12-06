@@ -12,6 +12,7 @@ public class readfile {
 	Network Net=new Network();
 	String Network_name;
 	Var var;
+	BayesBallQuery bayesballquery;
 	public readfile(String FileInput) {
 		Network_name=FileInput;
 	}
@@ -72,7 +73,7 @@ public class readfile {
 									int j=0;
 									double sumProb=0;
 									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
-										String ParentName=Net.Vars.get(index).parents.get(i).name;
+										Var ParentName=Net.Vars.get(index).parents.get(i);
 										cptParents.parents_value.put(ParentName, CTPtemp[i]);
 										j++;
 									}
@@ -94,22 +95,44 @@ public class readfile {
 								}
 							}
 						}
-					}
-					else {
-						System.err.println("invaild input");
-						System.exit(0);
-					}
+						if (line.contains("Queries")) {
+							line=br.readLine();
+							while(line.length()>1) {
+								if (line.charAt(1)=='(') {}
+								else {
+									String firstSplit[]=line.split("|");
+									String Temp=new String(firstSplit[0]);
+									String SecondSplit[]=Temp.split("-");
+									int StartIndex=Net.findByName(SecondSplit[0]);
+									bayesballquery.start=Net.Vars.get(StartIndex);
+									int EndIndex=Net.findByName(SecondSplit[1]);
+									bayesballquery.end=Net.Vars.get(EndIndex);
+									String Temp2=new String(firstSplit[1]);
+									if (Temp2.contains(",")) {
+										String ThirdSplit []=line.split(",");
+									}
+								}							
 
+									
+								}
+
+							}
+						}
+						else {
+							System.err.println("invaild input");
+							System.exit(0);
+						}
+
+					}
 				}
-			}
-			for (int i=0;i<Net.Vars.size();i++) {
-				Net.Vars.get(i).print();
-				System.out.println("***********************************************");	
+				for (int i=0;i<Net.Vars.size();i++) {
+					Net.Vars.get(i).print();
+					System.out.println("***********************************************");	
+				}
+
 			}
 
+			catch (IOException e) {e.printStackTrace();}
 		}
-
-		catch (IOException e) {e.printStackTrace();}
 	}
-}
 

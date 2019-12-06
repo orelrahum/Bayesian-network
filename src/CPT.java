@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class CTPParents{
-	public Map<String, String> parents_value = new HashMap<>();
+	public Map<Var, String> parents_value = new HashMap<>();
 }
 class CTPValues{
 	public Map<String, Double> value_prob = new HashMap<>();

@@ -29,4 +29,7 @@ public class Var {
 		for (var v : children) System.out.print(v.name + ","); System.out.print("\n");
 		cpt.print();
 	}
+	public String toString() {
+		return this.name;
+	}
 }
