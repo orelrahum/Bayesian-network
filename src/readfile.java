@@ -17,7 +17,7 @@ public class readfile {
 		Network_name=FileInput;
 	}
 
-	public void read() {
+	public Network read() {
 		String line = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(Network_name))) 
 		{	
@@ -125,14 +125,10 @@ public class readfile {
 
 					}
 				}
-				for (int i=0;i<Net.Vars.size();i++) {
-					Net.Vars.get(i).print();
-					System.out.println("***********************************************");	
-				}
-
 			}
 
 			catch (IOException e) {e.printStackTrace();}
+		return Net;
 		}
 	}
 

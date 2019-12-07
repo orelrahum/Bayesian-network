@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class Network {
 
 	public  ArrayList<Var> Vars=new ArrayList<Var>();
-	
+	public ArrayList<Query> NetQuery = new ArrayList<Query>();
 	public Network() {}
 	
 	public boolean add(Var e) {
@@ -69,5 +69,10 @@ public class Network {
 	public boolean removeAll(Collection<?> c) {
 		return Vars.removeAll(c);
 	}
-
+	public void print() {
+		for (int i=0;i<Vars.size();i++) {
+			Vars.get(i).print();
+			System.out.println("********************************************************************************");
+		}
+	}
 }

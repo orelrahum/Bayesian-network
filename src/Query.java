@@ -14,6 +14,7 @@ class BayesBallQuery{
 }
 class VarElimQuery{}
 public class Query {
-
+	public ArrayList<BayesBallQuery> BayesBall = new ArrayList<BayesBallQuery>();
+	public ArrayList<VarElimQuery> VarElim = new ArrayList<VarElimQuery>();
 }
 
