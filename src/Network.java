@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,6 +26,19 @@ public class Network {
 		return -1;
 	}
 	
+	public void makeoutput(String answer) throws IOException {
+		FileWriter output1 = new FileWriter("try.txt");
+		BufferedWriter writer = new BufferedWriter(output1);
+		writer.write(answer);
+		writer.close();
+	}
+	
+	public String QueryAnswers() {
+		String s="";
+		for (int i=0;i<35;i++) {
+		s+="1\n";}
+		return s;
+	}
 	
 	public boolean addAll(Collection<? extends Var> c) {
 		return Vars.addAll(c);
