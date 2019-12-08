@@ -12,7 +12,11 @@ public class readfile {
 	Network Net=new Network();
 	String Network_name;
 	Var var;
-	BayesBallQuery bayesballquery;
+	BayesBallQuery bayesballquery= new BayesBallQuery();
+	VarElimQuery varelimquery= new VarElimQuery();
+	Query query=new Query();
+	Given givenBayes=new Given();
+	Given givenVarElim= new Given();
 	public readfile(String FileInput) {
 		Network_name=FileInput;
 	}
@@ -95,40 +99,46 @@ public class readfile {
 								}
 							}
 						}
-						if (line.contains("Queries")) {
-							line=br.readLine();
-							while(line.length()>1) {
-								if (line.charAt(1)=='(') {}
-								else {
-									String firstSplit[]=line.split("|");
-									String Temp=new String(firstSplit[0]);
-									String SecondSplit[]=Temp.split("-");
-									int StartIndex=Net.findByName(SecondSplit[0]);
-									bayesballquery.start=Net.Vars.get(StartIndex);
-									int EndIndex=Net.findByName(SecondSplit[1]);
-									bayesballquery.end=Net.Vars.get(EndIndex);
-									String Temp2=new String(firstSplit[1]);
-									if (Temp2.contains(",")) {
-										String ThirdSplit []=line.split(",");
-									}
-								}							
-
-									
-								}
-
-							}
-						}
-						else {
-							System.err.println("invaild input");
-							System.exit(0);
-						}
 
 					}
+					else {
+						System.err.println("invaild input");
+						System.exit(0);
+					}
+
+				}
+				if (line.contains("Queries")) {
+					line=br.readLine();
+					while(line!=null) {
+						if (line.charAt(1)=='(') {}
+						else {
+							String firstSplit[]=line.split("\\|");
+							String Temp=new String(firstSplit[0]);
+							String SecondSplit[]=Temp.split("-");
+							bayesballquery.start=new String(SecondSplit[0]);
+							bayesballquery.end=new String (SecondSplit[1]);
+							if (firstSplit.length>1) {
+								String Temp2=new String (firstSplit[1]);
+								String SecondAplit2[]=Temp2.split(",");
+								for (int i=0;i<SecondAplit2.length;i++) {
+									String Temp3=new String (SecondAplit2[i]);
+									String SecondAplit3[]=Temp3.split("=");
+									givenBayes.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
+								}
+								bayesballquery.Given_the_BB.add(givenBayes);
+								query.BayesBall.add(bayesballquery);
+								givenBayes.Given_the.clear();
+							}
+						}
+						line=br.readLine();
+					}
+					Net.NetQuery.add(query);
 				}
 			}
-
-			catch (IOException e) {e.printStackTrace();}
-		return Net;
 		}
+
+		catch (IOException e) {e.printStackTrace();}
+		return Net;
 	}
+}
 

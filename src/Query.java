@@ -3,13 +3,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Given{
-	public Map<Var, String> Given_the = new HashMap<>();
+	public Map<String, String> Given_the = new HashMap<>();
 }
 
 class BayesBallQuery{
 	public ArrayList<Given> Given_the_BB = new ArrayList<Given>();
-	Var start;
-	Var end;
+	String start;
+	String end=new String();
 	
 }
 class VarElimQuery{}

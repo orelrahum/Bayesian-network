@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 class CTPParents{
+	public ArrayList<String> parents_values_name = new ArrayList<String>();
+	public ArrayList<Var> parents_values_Var = new ArrayList<Var>();
 	public Map<Var, String> parents_value = new HashMap<>();
 }
 class CTPValues{
