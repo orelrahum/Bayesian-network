@@ -126,13 +126,12 @@ public class readfile {
 									givenBayes.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
 								}
 								bayesballquery.Given_the_BB.add(givenBayes);
-								query.BayesBall.add(bayesballquery);
+								Net.query.BayesBall.add(bayesballquery);
 								givenBayes.Given_the.clear();
 							}
 						}
 						line=br.readLine();
 					}
-					Net.NetQuery.add(query);
 				}
 			}
 		}

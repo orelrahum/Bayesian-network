@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class Network {
 
 	public  ArrayList<Var> Vars=new ArrayList<Var>();
-	public ArrayList<Query> NetQuery = new ArrayList<Query>();
+	Query query= new Query();
 	public Network() {}
 	
 	public boolean add(Var e) {
