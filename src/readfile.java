@@ -15,8 +15,6 @@ public class readfile {
 	BayesBallQuery bayesballquery= new BayesBallQuery();
 	VarElimQuery varelimquery= new VarElimQuery();
 	Query query=new Query();
-	Given givenBayes=new Given();
-	Given givenVarElim= new Given();
 	public readfile(String FileInput) {
 		Network_name=FileInput;
 	}
@@ -110,7 +108,24 @@ public class readfile {
 				if (line.contains("Queries")) {
 					line=br.readLine();
 					while(line!=null) {
-						if (line.charAt(1)=='(') {}
+						if (line.charAt(1)=='(') {
+							String firstSplit[]=line.split("\\|");
+							String Temp= new String (firstSplit[0]);
+							Temp=Temp.substring(2);
+							String secondSplit[]=Temp.split("=");
+							varelimquery.Value=new String (secondSplit[1]);
+							varelimquery.Name=new String(secondSplit[0]);
+							String Temp2=new String (firstSplit[1]);
+//							if (Temp2.length()>3) {
+//								Temp2=Temp2.substring(Temp2.length()-2);
+//								String SecondAplit2[]=Temp2.split(",");
+//								for (int i=0;i<SecondAplit2.length;i++) {
+//									String Temp3=new String (SecondAplit2[i]);
+//									String SecondAplit3[]=Temp3.split("=");
+//									varelimquery.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
+//								}
+//							}
+						}
 						else {
 							String firstSplit[]=line.split("\\|");
 							String Temp=new String(firstSplit[0]);
@@ -123,12 +138,12 @@ public class readfile {
 								for (int i=0;i<SecondAplit2.length;i++) {
 									String Temp3=new String (SecondAplit2[i]);
 									String SecondAplit3[]=Temp3.split("=");
-									givenBayes.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
+									bayesballquery.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
 								}
-								bayesballquery.Given_the_BB.add(givenBayes);
-								Net.query.BayesBall.add(bayesballquery);
-								givenBayes.Given_the.clear();
+								Net.querys.BayesBall.add(bayesballquery);
+								bayesballquery.Given_the.clear();
 							}
+							System.out.println("lallalalalaa"+Net.querys.BayesBall.size());
 						}
 						line=br.readLine();
 					}

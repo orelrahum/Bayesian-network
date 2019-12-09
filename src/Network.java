@@ -10,7 +10,7 @@ import java.util.Iterator;
 public class Network {
 
 	public  ArrayList<Var> Vars=new ArrayList<Var>();
-	Query query= new Query();
+	Query querys= new Query();
 	public Network() {}
 	
 	public boolean add(Var e) {
@@ -91,5 +91,6 @@ public class Network {
 			Vars.get(i).print();
 			System.out.println("********************************************************************************");
 		}
+		querys.print();
 	}
 }
