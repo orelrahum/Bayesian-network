@@ -23,7 +23,7 @@ public class BayesBall {
 				String Temp3=new String (SecondAplit2[i]);
 				String SecondAplit3[]=Temp3.split("=");
 				int index =Net.findByName(SecondAplit3[0]);
-				Net.Vars.get(index).color=1;
+				if (index!=-1) {Net.Vars.get(index).color=1;}
 			}
 		}
 		boolean ans=isConnected(Net,null,Start,End,up);
@@ -56,7 +56,7 @@ public class BayesBall {
 			}
 			else {
 				for(int i=0;i<Start.parents.size();i++) {
-					if(Start.parents.get(i)!=last &&!isConnected(Net,Start,Start.parents.get(i),End,false))
+					if(Start.parents.get(i)!=last &&!isConnected(Net,Start,Start.parents.get(i),End,true))
 						return false;
 				}
 				for(int i=0; i<Start.children.size();i++) {

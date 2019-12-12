@@ -1,0 +1,43 @@
+Network
+Variables: L,R,D,T,B,T'
+
+Var L
+Values: true,false
+Parents: none
+
+
+Var R
+Values: true,false
+Parents: L
+
+
+Var D
+Values: true,false
+Parents: R
+
+
+Var T
+Values: true,false
+Parents: R,B
+
+
+Var B
+Values: true,false
+Parents: none
+
+
+Var T'
+Values: true,false
+Parents: T
+
+
+Queries
+L-T'|T=true
+L-B|
+L-B|T=true
+L-B|T'=true
+L-B|T=true,R=false
+P(B=true|J=true,M=true),A-E
+P(B=true|J=true,M=true),E-A
+P(J=true|B=true),A-E-M
+P(J=true|B=true),M-E-A

@@ -1,0 +1,36 @@
+Network
+Variables: L,R,D,T,B,Z
+
+Var L
+Values: true,false
+Parents: none
+
+Var R
+Values: true,false
+Parents: L
+
+
+Var D
+Values: true,false
+Parents: R
+
+
+Var T
+Values: true,false
+Parents: R,B
+
+
+Var B
+Values: true,false
+Parents: none
+
+Var Z
+Values: true,false
+Parents: T
+
+Queries
+L-Z|T=true
+L-B|
+L-B|T=true
+L-B|Z=true
+L-B|T=True,R=true
