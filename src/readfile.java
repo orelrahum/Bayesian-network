@@ -12,9 +12,6 @@ public class readfile {
 	Network Net=new Network();
 	String Network_name;
 	Var var;
-//	BayesBallQuery bayesballquery= new BayesBallQuery();
-//	VarElimQuery varelimquery= new VarElimQuery();
-//	Query query=new Query();
 	public readfile(String FileInput) {
 		Network_name=FileInput;
 	}

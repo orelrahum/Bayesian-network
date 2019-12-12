@@ -3,11 +3,10 @@ import java.io.IOException;
 public class ex1 {
 
 	public static void main(String[] args) throws IOException {
-		readfile f=new readfile("input.txt");
+		readfile f=new readfile("input2.txt");
 		Network Net=f.read();
 		Net.print();
-		String answer=Net.QueryAnswers();
-		Net.makeoutput(answer);
+		Net.makeoutput(Net.Answers);
 	}
 
 }

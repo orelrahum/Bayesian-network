@@ -11,7 +11,6 @@ public class Network {
 
 	public  ArrayList<Var> Vars=new ArrayList<Var>();
 	String Answers=new String();
-	//Query querys= new Query();
 	public Network() {}
 	
 	public boolean add(Var e) {
