@@ -6,6 +6,7 @@ public class Var {
 	public ArrayList<String> values = new ArrayList<String>();
 	public ArrayList<Var> parents = new ArrayList<Var>();
 	public ArrayList<Var> children = new ArrayList<Var>();
+	int color=0; // 0=white, 1=gray
 	public CPT cpt=new CPT();
 	
 	public Var(String name) {

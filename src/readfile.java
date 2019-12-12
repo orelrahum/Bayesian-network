@@ -12,9 +12,9 @@ public class readfile {
 	Network Net=new Network();
 	String Network_name;
 	Var var;
-	BayesBallQuery bayesballquery= new BayesBallQuery();
-	VarElimQuery varelimquery= new VarElimQuery();
-	Query query=new Query();
+//	BayesBallQuery bayesballquery= new BayesBallQuery();
+//	VarElimQuery varelimquery= new VarElimQuery();
+//	Query query=new Query();
 	public readfile(String FileInput) {
 		Network_name=FileInput;
 	}
@@ -109,42 +109,15 @@ public class readfile {
 					line=br.readLine();
 					while(line!=null) {
 						if (line.charAt(1)=='(') {
-							String firstSplit[]=line.split("\\|");
-							String Temp= new String (firstSplit[0]);
-							Temp=Temp.substring(2);
-							String secondSplit[]=Temp.split("=");
-							varelimquery.Value=new String (secondSplit[1]);
-							varelimquery.Name=new String(secondSplit[0]);
-							String Temp2=new String (firstSplit[1]);
-//							if (Temp2.length()>3) {
-//								Temp2=Temp2.substring(Temp2.length()-2);
-//								String SecondAplit2[]=Temp2.split(",");
-//								for (int i=0;i<SecondAplit2.length;i++) {
-//									String Temp3=new String (SecondAplit2[i]);
-//									String SecondAplit3[]=Temp3.split("=");
-//									varelimquery.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
-//								}
-//							}
+							String answer=new String();
+							answer=VarElim.VarElimAnswer(Net,line);
+							Net.Answers+=answer+"\n";
 						}
 						else {
-							String firstSplit[]=line.split("\\|");
-							String Temp=new String(firstSplit[0]);
-							String SecondSplit[]=Temp.split("-");
-							bayesballquery.start=new String(SecondSplit[0]);
-							bayesballquery.end=new String (SecondSplit[1]);
-							if (firstSplit.length>1) {
-								String Temp2=new String (firstSplit[1]);
-								String SecondAplit2[]=Temp2.split(",");
-								for (int i=0;i<SecondAplit2.length;i++) {
-									String Temp3=new String (SecondAplit2[i]);
-									String SecondAplit3[]=Temp3.split("=");
-									bayesballquery.Given_the.put(SecondAplit3[0], SecondAplit3[1]);
-								}
-								Net.querys.BayesBall.add(bayesballquery);
-								bayesballquery.Given_the.clear();
-							}
-							System.out.println("lallalalalaa"+Net.querys.BayesBall.size());
-						}
+							String answer=new String();
+							answer=BayesBall.BayesAnswer(Net,line);
+							Net.Answers+=answer+"\n";
+					}
 						line=br.readLine();
 					}
 				}

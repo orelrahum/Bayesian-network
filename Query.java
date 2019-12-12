@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class BayesBallQuery{
-	public Map<String, String> Given_the = new HashMap<>();
+	public Map<String, String> Given_the1 = new HashMap<>();
 	String start;
 	String end;
 
@@ -23,11 +23,11 @@ public class Query {
 		for(int i=0;i<this.BayesBall.size();i++) {
 			System.out.println("fkjsdlkfnsdlkvnsd"+ this.BayesBall.size());
 			System.out.print(this.BayesBall.get(i).start + "-"+this.BayesBall.get(i).end);
-			if (!BayesBall.get(i).Given_the.isEmpty()){
+			if (!BayesBall.get(i).Given_the1.isEmpty()){
 			System.out.print("|");	
 			}
-			for (int j=0;j<this.BayesBall.get(i).Given_the.size();j++) {
-				System.out.print(this.BayesBall.get(i).Given_the);
+			for (int j=0;j<this.BayesBall.get(i).Given_the1.size();j++) {
+				System.out.print(this.BayesBall.get(i).Given_the1);
 			}
 
 		}
