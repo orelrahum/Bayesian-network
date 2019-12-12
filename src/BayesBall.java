@@ -27,14 +27,11 @@ public class BayesBall {
 			}
 		}
 		boolean ans=isConnected(Net,null,Start,End,up);
-		if (ans==false) {answer+="false";}
-		else {answer+="true";}
+		if (ans==false) {answer+="no";}
+		else {answer+="yes";}
 		return answer;
 	}
-	// 	private boolean Bayes_Ball_Alg(BayesianNetwork.Var last,BayesianNetwork.Var source,BayesianNetwork.Var dest,ArrayList<BayesianNetwork.Var>ind,direction dir) {
-
 	public static boolean isConnected(Network Net, Var last,Var Start, Var End , boolean up) {
-		System.out.println("dsadsadsad");
 		if(Start.name.contains(End.name)) return false;
 		if(Start.color==1) {
 			if(up) {
