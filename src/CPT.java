@@ -35,7 +35,7 @@ class CTPValues{
 }
 
 public class CPT {
-	String Name;
+	String Name=new String();
 	public ArrayList<CTPParents> parents_values = new ArrayList<CTPParents>();
 	public ArrayList<CTPValues> values_prob = new ArrayList<CTPValues>();
 

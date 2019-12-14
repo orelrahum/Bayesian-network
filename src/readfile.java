@@ -96,10 +96,12 @@ public class readfile {
 									//cptValues.value_prob.put(LastValueName,comp);
 									Net.Vars.get(index).cpt.parents_values.add(cptParents);
 									Net.Vars.get(index).cpt.values_prob.add(cptValues);
-									Net.Vars.get(index).cpt.Name+=Net.Vars.get(index).name;
+
 									line=br.readLine();
 								}
 							}
+							Net.Vars.get(index).cpt.Name+=Net.Vars.get(index).name;
+//							System.out.println(Net.Vars.get(index).cpt.Name);
 						}
 
 					}
@@ -121,7 +123,7 @@ public class readfile {
 							String answer=new String();
 							answer=BayesBall.BayesAnswer(Net,line);
 							Net.Answers+=answer+"\n";
-					}
+						}
 						line=br.readLine();
 					}
 				}

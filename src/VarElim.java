@@ -11,6 +11,7 @@ public class VarElim {
 		ArrayList<String> given_the_name = new ArrayList<String>();
 		ArrayList<String> given_the_value = new ArrayList<String>();
 		ArrayList<String> WhatToKill = new ArrayList<String>();
+		WhatToKill.removeAll(WhatToKill);
 		String firstSplit[]=Query.split("\\|");
 		String Temp= new String (firstSplit[0]);
 		Temp=Temp.substring(2);
@@ -28,7 +29,8 @@ public class VarElim {
 			String Temp3=new String (SecondAplit2[SecondAplit2.length-1]);
 			String ThirdSplit[]=Temp3.split("-");
 			for (int i=0;i<ThirdSplit.length;i++) {
-				WhatToKill.add(ThirdSplit[i]);	
+				WhatToKill.add(ThirdSplit[i]);
+				System.out.println(ThirdSplit[i]);
 			}
 		}
 		ArrayList<CPT> CPT_vec = new ArrayList<CPT>();
@@ -37,37 +39,49 @@ public class VarElim {
 			CPT_vec.add(temp);
 		}
 
-		while(!WhatToKill.isEmpty()) {
+		while(WhatToKill.size()>0) {
 			// send to kill this var
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
+			//System.out.println(KillNow);
 			for (int i=0;i<CPT_vec.size();i++)
-				if (CPT_vec.get(i).equals(KillNow)) {
+				if (CPT_vec.get(i).Name.contains(KillNow)) {
 					CPT_vec_temp.add(CPT_vec.get(i));
 					CPT_vec.remove(i);
+					//System.out.println(WhatToKill.size());
 				}
 				else {
-					for (int j=0;i<CPT_vec.get(i).parents_values.size();j++) {
-						for (int k=0;k<CPT_vec.get(i).parents_values.get(j).parents_names.size();k++) {
-							if (CPT_vec.get(i).parents_values.get(j).parents_names.get(k).equals(KillNow)) {
-								CPT_vec_temp.add(CPT_vec.get(i));
-								CPT_vec.remove(i);}
+					if (CPT_vec.get(i).parents_values.size()>0) {
+						for (int j=0;i<CPT_vec.get(i).parents_values.size();j++) {
+							for (int k=0;k<CPT_vec.get(i).parents_values.get(j).parents_names.size();k++) {
+								if (CPT_vec.get(i).parents_values.get(j).parents_names.get(k).equals(KillNow)) {
+									CPT_vec_temp.add(CPT_vec.get(i));
+									CPT_vec.remove(i);}
+							}
 						}
 					}
 				}
-			
+			CPT AfterJoin=Join(CPT_vec_temp);
+			CPT afterEliminate=Eliminate(AfterJoin);
+			CPT_vec.add(afterEliminate);
+
 			WhatToKill.remove(0);
 			CPT_vec_temp.removeAll(CPT_vec_temp);
+			System.out.println("lalalal");
 		}
 		return Answer;
 	}
 
 
 
-	public static void Join() {}
+	public static CPT Join(ArrayList vec ) {
+		CPT a = null;
+		return a;}
 
 
 
-	public static void Eliminate() {}
+	public static CPT Eliminate(CPT AfterJoin) {
+		CPT a = null;
+		return a;}
 
 }
