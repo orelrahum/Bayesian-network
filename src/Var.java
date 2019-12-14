@@ -16,9 +16,9 @@ public class Var {
 	}
 	public Var(Var other) {
 		this.name=other.name;
-//		this.values=other.values;
-//		this.parents=other.parents;
-//		this.children=other.children;
+		this.values=other.values;
+		this.parents=other.parents;
+		this.children=other.children;
 	}
 	public boolean CompareVar (Var V) {
 		if (this.name==V.name) {return true;}
