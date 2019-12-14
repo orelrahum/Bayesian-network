@@ -1,16 +1,17 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+	
 public class VarElim {
+	public static ArrayList<String> given_the_name = new ArrayList<String>();
+	public static ArrayList<String> given_the_value = new ArrayList<String>();
+	public static ArrayList<String> WhatToKill = new ArrayList<String>();
 
 	public static String VarElimAnswer(Network Net,String Query) {
 		String Answer=new String("varelim");
 		int JoinNum=0;
 		int EliminateNum=0;
-		ArrayList<String> given_the_name = new ArrayList<String>();
-		ArrayList<String> given_the_value = new ArrayList<String>();
-		ArrayList<String> WhatToKill = new ArrayList<String>();
+
 		WhatToKill.removeAll(WhatToKill);
 		String firstSplit[]=Query.split("\\|");
 		String Temp= new String (firstSplit[0]);
@@ -39,7 +40,7 @@ public class VarElim {
 			CPT_vec.add(temp);
 		}
 
-		while(WhatToKill.size()>0) {
+		while(WhatToKill.size()>1) {
 			// send to kill this var
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
