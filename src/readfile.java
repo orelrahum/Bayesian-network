@@ -72,8 +72,10 @@ public class readfile {
 									int j=0;
 									double sumProb=0;
 									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
-										Var ParentName=Net.Vars.get(index).parents.get(i);
-										cptParents.parents_value.put(ParentName, CTPtemp[i]);
+										String ParentName=Net.Vars.get(index).parents.get(i).name;
+										cptParents.parents_names.add(ParentName);
+										cptParents.parents_values.add(CTPtemp[i]);
+										//cptParents.parents_value.put(ParentName, CTPtemp[i]);
 										j++;
 									}
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
@@ -81,18 +83,25 @@ public class readfile {
 										double ProbForVar=Double.parseDouble(CTPtemp[j+1]);
 										ProbForVar=General.round(ProbForVar);
 										sumProb=+ProbForVar;
-										cptValues.value_prob.put(ValueName,ProbForVar);
+										cptValues.value.add(ValueName);
+										cptValues.prob.add(ProbForVar);
+										//cptValues.value_prob.put(ValueName,ProbForVar);
 									}
 									double comp=1-sumProb;
 									comp=General.round(comp);
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
-									cptValues.value_prob.put(LastValueName,comp);
+									cptValues.value.add(LastValueName);
+									cptValues.prob.add(comp);
+									//cptValues.value_prob.put(LastValueName,comp);
 									Net.Vars.get(index).cpt.parents_values.add(cptParents);
 									Net.Vars.get(index).cpt.values_prob.add(cptValues);
+
 									line=br.readLine();
 								}
 							}
+							Net.Vars.get(index).cpt.Name+=Net.Vars.get(index).name;
+//							System.out.println(Net.Vars.get(index).cpt.Name);
 						}
 
 					}
@@ -114,7 +123,7 @@ public class readfile {
 							String answer=new String();
 							answer=BayesBall.BayesAnswer(Net,line);
 							Net.Answers+=answer+"\n";
-					}
+						}
 						line=br.readLine();
 					}
 				}
