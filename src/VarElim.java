@@ -39,14 +39,15 @@ public class VarElim {
 			CPT temp= new CPT (Net.Vars.get(i).cpt);
 			CPT_vec.add(temp);
 		}
-		
+
 		while(WhatToKill.size()>0) {
 			// send to kill this var
+			CPT tempKill=new CPT();
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++)
 				if (CPT_vec.get(i).Name.contains(KillNow)) {
-					CPT_vec_temp.add(CPT_vec.get(i));
+					tempKill=new CPT(CPT_vec.get(i));
 					CPT_vec.remove(i);
 				}
 				else {
@@ -60,23 +61,30 @@ public class VarElim {
 						}
 					}
 				}
-			CPT AfterJoin=Join(CPT_vec_temp);
+
+			CPT AfterJoin=Join(CPT_vec_temp , tempKill);
 			CPT afterEliminate=Eliminate(AfterJoin);
 			//CPT_vec.add(afterEliminate);
 
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
-		
-		
+
+
 		return Answer;
 	}
-	
-	
-	public static CPT Join(ArrayList <CPT> vec ) {
-		CPT temp=new CPT();
+
+
+	public static CPT Join(ArrayList <CPT> vec , CPT tempKill ) {
 		for (int i=0;i<vec.size();i++) {
-			for(int j=0;j<vec.get(i).parents_values.get(0).parents_names.size();j++) {
+			for (int j=0;j<vec.get(i).values_prob.size();j++) {
+				for (int k=0;k<tempKill.values_prob.size();k++) {
+					if (vec.get(i).values_prob.get(j).value.equals(tempKill.values_prob.get(k).value)){
+//						
+//						for (int z=0;z<)
+//						tempKill.values_prob.get(k).prob=vec.get(i).values_prob.get(j).prob
+					}
+				}
 			}
 		}
 		CPT a = null;

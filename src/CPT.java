@@ -62,6 +62,10 @@ public class CPT {
 		}
 		return true;	
 	}
+	
+	public int findIndexName(CPT other) {
+		for (int i=0;i<other.)
+	}
 
 	public void print() {
 		//		for(int i=0;i<this.values_prob.size();i++) {
