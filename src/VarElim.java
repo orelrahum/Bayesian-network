@@ -73,7 +73,12 @@ public class VarElim {
 	}
 	
 	
-	public static CPT Join(ArrayList vec ) {
+	public static CPT Join(ArrayList <CPT> vec ) {
+		CPT temp=new CPT();
+		for (int i=0;i<vec.size();i++) {
+			for(int j=0;j<vec.get(i).parents_values.get(0).parents_names.size();j++) {
+			}
+		}
 		CPT a = null;
 		return a;}
 

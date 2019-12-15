@@ -55,6 +55,14 @@ public class CPT {
 
 	}
 
+	public  boolean parentsValueEqual(CPT other) {
+		if (this.parents_values.get(0).parents_names.size()!=other.parents_values.get(0).parents_names.size()) {return false;}
+		for (int i=0;i<this.parents_values.get(0).parents_names.size();i++) {
+			if (!this.parents_values.get(0).parents_names.get(i).equals(other.parents_values.get(0).parents_names.get(i))){return false;}
+		}
+		return true;	
+	}
+
 	public void print() {
 		//		for(int i=0;i<this.values_prob.size();i++) {
 		//			System.out.print(this.parents_values.get(i).parents_value);
