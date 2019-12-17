@@ -43,20 +43,16 @@ public class VarElim {
 		}
 
 		while(WhatToKill.size()>0) {
+			System.out.println("that to kill now is : "+ WhatToKill.get(0));
 			//CPT tempKill=new CPT();
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++) {
-//				if (CPT_vec.get(i).Name.contains(KillNow)) {
-//					tempKill=new CPT(CPT_vec.get(i));
-//					CPT_vec.remove(i);
-//				}
-				if (!CPT_vec.get(i).lines.isEmpty()) {
-					for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
-						if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
-							CPT_vec_temp.add(CPT_vec.get(i));
-							CPT_vec.remove(i);}
-					}
+				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
+					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).equals(KillNow)) {
+						System.out.println("its input to temp CPT "+ CPT_vec.get(i+1).lines.get(0).parents.parents_names.get(0) );
+						CPT_vec_temp.add(CPT_vec.get(i));
+						CPT_vec.remove(i);}
 				}
 			}
 			int killIndex=Net.findByName(KillNow);
@@ -85,18 +81,18 @@ public class VarElim {
 
 	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
 		if (haveParent && haveChild) {
-			for (int k=0;k<tempKill.lines.size();k++) {
-				for (int i=0;i<vec.size();i++) {
-					for(int j=0;j<vec.get(i).lines.size();j++) {
-						for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
-							if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
-								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))) {
-									tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;
-									System.out.println(tempKill.lines.get(k).prob);
-								}
+
+			for (int i=0;i<vec.size();i++) {
+				System.out.println(vec.size());
+				for(int j=0;j<vec.get(i).lines.size();j++) {
+					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
+
+						for (int k=0;k<tempKill.lines.size();k++) {
+							if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z)) &&tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))) {
+								tempKill.lines.get(k).prob=tempKill.lines.get(k).prob*vec.get(i).lines.get(j).prob;
+								System.out.println(tempKill.lines.get(k).prob);
 							}
 						}
-
 					}
 
 				}

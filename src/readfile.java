@@ -89,9 +89,9 @@ public class readfile {
 									comp=General.round(comp);
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
-									tempLine.Value=LastValueName;
-									tempLine.prob=comp;
-									Net.Vars.get(index).cpt.lines.add(tempLine);
+//									tempLine.Value=LastValueName;
+//									tempLine.prob=comp;
+//									Net.Vars.get(index).cpt.lines.add(tempLine);
 								}
 								line=br.readLine();
 							}

@@ -13,7 +13,12 @@ public class CPT {
 			this.lines.add(temp);
 		}
 	}
-	public void print() {}
+	public void print() {
+		for (int i=0;i<lines.size();i++) {
+			lines.get(i).print();
+			System.out.println("");
+		}
+	}
 }
 
 class LineCPT {
@@ -34,6 +39,12 @@ class LineCPT {
 		this.Value+=other.Value;
 		this.prob=other.prob;
 	}
+	public void print() {
+		parents.print();
+		System.out.print(",");
+		System.out.print("="+Value);
+		System.out.print(prob);
+	}
 }
 
 class ParentsCPT{
@@ -48,6 +59,12 @@ class ParentsCPT{
 		for (int i=0;i<other.parents_values.size();i++) {
 			this.parents_values.add(other.parents_values.get(i));
 		}
+	}
+	public void print () {
+		for (int i=0;i<this.parents_names.size();i++) {
+			System.out.print(this.parents_names.get(i)+",");
+			System.out.print(this.parents_values.get(i)+",");
+		}	
 	}
 }
 
