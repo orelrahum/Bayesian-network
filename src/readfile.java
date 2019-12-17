@@ -95,8 +95,7 @@ public class readfile {
 								}
 								line=br.readLine();
 							}
-							Net.Vars.get(index).cpt.Name+=Net.Vars.get(index).name;
-							System.out.println(Net.Vars.get(index).cpt.Name);
+							Net.Vars.get(index).cpt.Name=Net.Vars.get(index).name;
 						}
 
 					}
@@ -108,7 +107,7 @@ public class readfile {
 				}
 				if (line.contains("Queries")) {
 					line=br.readLine();
-					while(line!=null) {
+					while(line!=null && line.length()>1) {
 						if (line.charAt(1)=='(') {
 							String answer=new String();
 							answer=VarElim.VarElimAnswer(Net,line);

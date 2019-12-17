@@ -42,11 +42,11 @@ class ParentsCPT{
 	public ParentsCPT () {}
 	public ParentsCPT(ParentsCPT other) {
 
-		for (int i=0;i<this.parents_names.size();i++) {
-			other.parents_names.add(this.parents_names.get(i));
+		for (int i=0;i<other.parents_names.size();i++) {
+			this.parents_names.add(other.parents_names.get(i));
 		}
-		for (int i=0;i<this.parents_values.size();i++) {
-			other.parents_values.add(this.parents_values.get(i));
+		for (int i=0;i<other.parents_values.size();i++) {
+			this.parents_values.add(other.parents_values.get(i));
 		}
 	}
 }
