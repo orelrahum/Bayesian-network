@@ -31,9 +31,9 @@ public class Var {
 		System.out.print("values: ");
 		for (String v : values) System.out.print(v + ","); System.out.print("\n");
 		System.out.print("parents: ");
-		for (var v : parents) System.out.print(v.name + ","); System.out.print("\n");
+		for (Var v : parents) System.out.print(v.name + ","); System.out.print("\n");
 		System.out.print("children: ");
-		for (var v : children) System.out.print(v.name + ","); System.out.print("\n");
+		for (Var v : children) System.out.print(v.name + ","); System.out.print("\n");
 		cpt.print();
 	}
 	public String toString() {
