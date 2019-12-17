@@ -94,7 +94,7 @@ public class readfile {
 									cptValues.value.add(LastValueName);
 									cptValues.prob.add(comp);
 									//cptValues.value_prob.put(LastValueName,comp);
-									Net.Vars.get(index).cpt.parents_values.add(cptParents);
+									Net.Vars.get(index).cpt.parents.add(cptParents);
 									Net.Vars.get(index).cpt.values_prob.add(cptValues);
 
 									line=br.readLine();

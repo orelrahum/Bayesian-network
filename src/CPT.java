@@ -36,7 +36,7 @@ class CTPValues{
 
 public class CPT {
 	String Name=new String();
-	public ArrayList<CTPParents> parents_values = new ArrayList<CTPParents>();
+	public ArrayList<CTPParents> parents = new ArrayList<CTPParents>();
 	public ArrayList<CTPValues> values_prob = new ArrayList<CTPValues>();
 
 
@@ -44,9 +44,9 @@ public class CPT {
 
 	public CPT(CPT other) {
 		this.Name+=other.Name;
-		for (int i=0;i<this.parents_values.size();i++) {
-			CTPParents temp=new CTPParents(this.parents_values.get(i));
-			other.parents_values.add(temp);
+		for (int i=0;i<this.parents.size();i++) {
+			CTPParents temp=new CTPParents(this.parents.get(i));
+			other.parents.add(temp);
 		}
 		for (int i=0;i<this.values_prob.size();i++) {
 			CTPValues temp=new CTPValues(this.values_prob.get(i));
@@ -56,13 +56,14 @@ public class CPT {
 	}
 
 	public  boolean parentsValueEqual(CPT other) {
-		if (this.parents_values.get(0).parents_names.size()!=other.parents_values.get(0).parents_names.size()) {return false;}
-		for (int i=0;i<this.parents_values.get(0).parents_names.size();i++) {
-			if (!this.parents_values.get(0).parents_names.get(i).equals(other.parents_values.get(0).parents_names.get(i))){return false;}
+		if (this.parents.get(0).parents_names.size()!=other.parents.get(0).parents_names.size()) {return false;}
+		for (int i=0;i<this.parents.get(0).parents_names.size();i++) {
+			if (!this.parents.get(0).parents_names.get(i).equals(other.parents.get(0).parents_names.get(i))){return false;}
 		}
 		return true;	
 	}
 	
+
 
 	public void print() {
 		//		for(int i=0;i<this.values_prob.size();i++) {
