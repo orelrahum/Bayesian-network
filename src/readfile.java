@@ -114,8 +114,8 @@ public class readfile {
 					while(line!=null && line.length()>1) {
 						if (line.charAt(1)=='(') {
 							String answer=new String();
-//							answer=VarElim.VarElimAnswer(Net,line);
-//							Net.Answers+=answer+"\n";
+							answer=VarElim.VarElimAnswer(Net,line);
+							Net.Answers+=answer+"\n";
 						}
 						else {
 							String answer=new String();
