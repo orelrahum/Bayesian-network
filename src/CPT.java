@@ -41,8 +41,7 @@ class LineCPT {
 	}
 	public void print() {
 		parents.print();
-		System.out.print(",");
-		System.out.print("="+Value);
+		System.out.print(Value+"=");
 		System.out.print(prob);
 	}
 }
@@ -62,7 +61,7 @@ class ParentsCPT{
 	}
 	public void print () {
 		for (int i=0;i<this.parents_names.size();i++) {
-			System.out.print(this.parents_names.get(i)+",");
+			System.out.print(this.parents_names.get(i)+"=");
 			System.out.print(this.parents_values.get(i)+",");
 		}	
 	}

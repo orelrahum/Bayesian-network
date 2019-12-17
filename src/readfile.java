@@ -66,32 +66,36 @@ public class readfile {
 							line=br.readLine();
 							while(line.length()>1) {
 								LineCPT tempLine=new LineCPT();
+								ParentsCPT tempParents=new ParentsCPT();
 								if (line.contains(",")) {
 									String CTPtemp  []=line.split(",");
 									int j=0;
 									double sumProb=0;
 									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
 										String ParentName=Net.Vars.get(index).parents.get(i).name;
-										tempLine.parents.parents_names.add(ParentName);
-										tempLine.parents.parents_values.add(CTPtemp[i]);
+										tempParents.parents_names.add(ParentName);
+										tempParents.parents_values.add(CTPtemp[i]);
 										j++;
 									}
+									j=(j+1);
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
+										System.out.println(line);
+										System.out.println("j is :" + j);
+										System.out.println("j after :" + j);
 										String ValueName=Net.Vars.get(index).values.get(i);
-										double ProbForVar=Double.parseDouble(CTPtemp[j+1]);
+										double ProbForVar=Double.parseDouble(CTPtemp[j]);
 										ProbForVar=General.round(ProbForVar);
-										sumProb=+ProbForVar;
-										tempLine.Value=ValueName;
-										tempLine.prob=ProbForVar;
+										sumProb+=ProbForVar;
+										tempLine=new LineCPT(tempParents, ValueName, ProbForVar);
 										Net.Vars.get(index).cpt.lines.add(tempLine);
+										j=j+2;
 									}
 									double comp=1-sumProb;
 									comp=General.round(comp);
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
-//									tempLine.Value=LastValueName;
-//									tempLine.prob=comp;
-//									Net.Vars.get(index).cpt.lines.add(tempLine);
+									tempLine=new LineCPT(tempParents ,LastValueName,comp);
+									Net.Vars.get(index).cpt.lines.add(tempLine);
 								}
 								line=br.readLine();
 							}
@@ -110,8 +114,8 @@ public class readfile {
 					while(line!=null && line.length()>1) {
 						if (line.charAt(1)=='(') {
 							String answer=new String();
-							answer=VarElim.VarElimAnswer(Net,line);
-							Net.Answers+=answer+"\n";
+//							answer=VarElim.VarElimAnswer(Net,line);
+//							Net.Answers+=answer+"\n";
 						}
 						else {
 							String answer=new String();
