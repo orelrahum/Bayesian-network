@@ -65,17 +65,15 @@ public class readfile {
 						if (line.contains("CPT")){
 							line=br.readLine();
 							while(line.length()>1) {
+								LineCPT tempLine=new LineCPT();
 								if (line.contains(",")) {
 									String CTPtemp  []=line.split(",");
-									CTPParents cptParents= new CTPParents();
-									CTPValues cptValues= new CTPValues();
 									int j=0;
 									double sumProb=0;
 									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
 										String ParentName=Net.Vars.get(index).parents.get(i).name;
-										cptParents.parents_names.add(ParentName);
-										cptParents.parents_values.add(CTPtemp[i]);
-//										cptParents.parents_value.put(ParentName, CTPtemp[i]);
+										tempLine.parents.parents_names.add(ParentName);
+										tempLine.parents.parents_values.add(CTPtemp[i]);
 										j++;
 									}
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
@@ -83,25 +81,22 @@ public class readfile {
 										double ProbForVar=Double.parseDouble(CTPtemp[j+1]);
 										ProbForVar=General.round(ProbForVar);
 										sumProb=+ProbForVar;
-										cptValues.value.add(ValueName);
-										cptValues.prob.add(ProbForVar);
-										//cptValues.value_prob.put(ValueName,ProbForVar);
+										tempLine.Value=ValueName;
+										tempLine.prob=ProbForVar;
+										Net.Vars.get(index).cpt.lines.add(tempLine);
 									}
 									double comp=1-sumProb;
 									comp=General.round(comp);
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
-									cptValues.value.add(LastValueName);
-									cptValues.prob.add(comp);
-									//cptValues.value_prob.put(LastValueName,comp);
-									Net.Vars.get(index).cpt.parents_values.add(cptParents);
-									Net.Vars.get(index).cpt.values_prob.add(cptValues);
-
-									line=br.readLine();
+									tempLine.Value=LastValueName;
+									tempLine.prob=comp;
+									Net.Vars.get(index).cpt.lines.add(tempLine);
 								}
+								line=br.readLine();
 							}
 							Net.Vars.get(index).cpt.Name+=Net.Vars.get(index).name;
-//							System.out.println(Net.Vars.get(index).cpt.Name);
+							System.out.println(Net.Vars.get(index).cpt.Name);
 						}
 
 					}

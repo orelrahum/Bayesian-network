@@ -1,6 +1,2 @@
 yes
 no
-varelim
-varelim
-varelim
-varelim

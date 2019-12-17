@@ -1,4 +1,4 @@
-Network
+	Network
 Variables: B,E,A,J,M
 
 Var B

@@ -45,26 +45,31 @@ public class VarElim {
 			CPT tempKill=new CPT();
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
-			for (int i=0;i<CPT_vec.size();i++)
+			for (int i=0;i<CPT_vec.size();i++) {
 				if (CPT_vec.get(i).Name.contains(KillNow)) {
+					System.out.println("dsadsad");
 					tempKill=new CPT(CPT_vec.get(i));
 					CPT_vec.remove(i);
 				}
-				else {
-					if (CPT_vec.get(i).parents_values.size()>0) {
-						for (int j=0;i<CPT_vec.get(i).parents_values.size();j++) {
-							for (int k=0;k<CPT_vec.get(i).parents_values.get(j).parents_names.size();k++) {
-								if (CPT_vec.get(i).parents_values.get(j).parents_names.get(k).contains(KillNow)) {
-									CPT_vec_temp.add(CPT_vec.get(i));
-									CPT_vec.remove(i);}
-							}
-						}
-					}
+				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
+					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
+						CPT_vec_temp.add(CPT_vec.get(i));
+						CPT_vec.remove(i);}
 				}
+			}
+			int killIndex=Net.findByName(KillNow);
+			boolean haveParent=false;
+			boolean haveChild=false;
+			if (Net.Vars.get(killIndex).parents.size()>0) {
+				haveParent=true;
+			}
+			if (Net.Vars.get(killIndex).children.size()>0) {
+				haveChild=true;
+			}
 
-			CPT AfterJoin=Join(CPT_vec_temp , tempKill);
+			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
 			CPT afterEliminate=Eliminate(AfterJoin);
-			//CPT_vec.add(afterEliminate);
+			CPT_vec.add(afterEliminate);
 
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
@@ -75,18 +80,34 @@ public class VarElim {
 	}
 
 
-	public static CPT Join(ArrayList <CPT> vec , CPT tempKill ) {
-		for (int i=0;i<vec.size();i++) {
-			for (int j=0;j<vec.get(i).values_prob.size();j++) {
-				for (int k=0;k<tempKill.values_prob.size();k++) {
-					if (vec.get(i).values_prob.get(j).value.equals(tempKill.values_prob.get(k).value)){
-//						
-//						for (int z=0;z<)
-//						tempKill.values_prob.get(k).prob=vec.get(i).values_prob.get(j).prob
+	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
+		if (haveParent && haveChild) {
+			for (int k=0;k<tempKill.lines.size();k++) {
+				for (int i=0;i<vec.size();i++) {
+					for(int j=0;j<vec.get(i).lines.size();j++) {
+						for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
+							if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
+								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))) {
+									tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;
+									System.out.println("dsadsadasda");
+								}
+							}
+						}
+
 					}
+
 				}
 			}
+
 		}
+		if (haveParent && !haveChild) {
+
+		}
+		if (!haveParent && haveChild) {
+
+		}
+
+
 		CPT a = null;
 		return a;}
 
