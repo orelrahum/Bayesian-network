@@ -27,7 +27,7 @@ public class Network {
 	}
 	
 	public void makeoutput(String answer) throws IOException {
-		FileWriter output1 = new FileWriter("try.txt");
+		FileWriter output1 = new FileWriter("output.txt");
 		BufferedWriter writer = new BufferedWriter(output1);
 		writer.write(answer);
 		writer.close();

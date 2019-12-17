@@ -75,7 +75,7 @@ public class readfile {
 										String ParentName=Net.Vars.get(index).parents.get(i).name;
 										cptParents.parents_names.add(ParentName);
 										cptParents.parents_values.add(CTPtemp[i]);
-										//cptParents.parents_value.put(ParentName, CTPtemp[i]);
+//										cptParents.parents_value.put(ParentName, CTPtemp[i]);
 										j++;
 									}
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
@@ -94,7 +94,7 @@ public class readfile {
 									cptValues.value.add(LastValueName);
 									cptValues.prob.add(comp);
 									//cptValues.value_prob.put(LastValueName,comp);
-									Net.Vars.get(index).cpt.parents.add(cptParents);
+									Net.Vars.get(index).cpt.parents_values.add(cptParents);
 									Net.Vars.get(index).cpt.values_prob.add(cptValues);
 
 									line=br.readLine();

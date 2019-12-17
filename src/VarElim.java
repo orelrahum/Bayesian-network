@@ -45,31 +45,30 @@ public class VarElim {
 			CPT tempKill=new CPT();
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
-			for (int i=0;i<CPT_vec.size();i++) {
-				if (!CPT_vec.get(i).parents.isEmpty()) {
-					System.out.println("1");
-					for (int j=0;i<CPT_vec.get(i).parents.size();j++) {
-						System.out.println("2");
-
-						for (int k=0;k<CPT_vec.get(i).parents.get(j).parents_names.size();k++) {
-							System.out.println("3");
-
-							if (CPT_vec.get(i).parents.get(j).parents_names.get(k).equals(KillNow)) {
-								System.out.println("kakaakakak");
-								CPT_vec_temp.add(CPT_vec.get(i));
-								CPT_vec.remove(i);}
+			for (int i=0;i<CPT_vec.size();i++)
+				if (CPT_vec.get(i).Name.contains(KillNow)) {
+					tempKill=new CPT(CPT_vec.get(i));
+					CPT_vec.remove(i);
+				}
+				else {
+					if (CPT_vec.get(i).parents_values.size()>0) {
+						for (int j=0;i<CPT_vec.get(i).parents_values.size();j++) {
+							for (int k=0;k<CPT_vec.get(i).parents_values.get(j).parents_names.size();k++) {
+								if (CPT_vec.get(i).parents_values.get(j).parents_names.get(k).contains(KillNow)) {
+									CPT_vec_temp.add(CPT_vec.get(i));
+									CPT_vec.remove(i);}
+							}
 						}
 					}
 				}
-			}
+
+			CPT AfterJoin=Join(CPT_vec_temp , tempKill);
+			CPT afterEliminate=Eliminate(AfterJoin);
+			//CPT_vec.add(afterEliminate);
+
+			WhatToKill.remove(0);
+			CPT_vec_temp.clear();
 		}
-		System.out.println(CPT_vec.size());
-		//		CPT AfterJoin=Join(CPT_vec_temp , tempKill);
-		//		CPT afterEliminate=Eliminate(AfterJoin);
-		//		//CPT_vec.add(afterEliminate);
-		//
-		//		WhatToKill.remove(0);
-		//		CPT_vec_temp.clear();
 
 
 		return Answer;
@@ -77,19 +76,17 @@ public class VarElim {
 
 
 	public static CPT Join(ArrayList <CPT> vec , CPT tempKill ) {
-		double temp=0;
 		for (int i=0;i<vec.size();i++) {
-			System.out.println("orelarrea");
-			for (int i2=0;i2<vec.get(i).parents.size();i2++) {
-				for (int i3=0;i3<tempKill.values_prob.size();i3++) {
-					if (vec.get(i).parents.get(i2).parents_values.equals(tempKill.values_prob.get(i3).value)){
-						System.out.println("lalalal");
-						temp=tempKill.values_prob.get(i3).prob.get(0)*vec.get(i).values_prob.get(i2).prob.get(0);
+			for (int j=0;j<vec.get(i).values_prob.size();j++) {
+				for (int k=0;k<tempKill.values_prob.size();k++) {
+					if (vec.get(i).values_prob.get(j).value.equals(tempKill.values_prob.get(k).value)){
+//						
+//						for (int z=0;z<)
+//						tempKill.values_prob.get(k).prob=vec.get(i).values_prob.get(j).prob
 					}
 				}
 			}
 		}
-		System.out.println(temp);
 		CPT a = null;
 		return a;}
 
