@@ -1,4 +1,4 @@
-	Network
+Network
 Variables: B,E,A,J,M
 
 Var B
@@ -31,13 +31,13 @@ false,=true,0.05
 
 Var M
 Values: true,false
-Parents: none
+Parents: A
 CPT:
-=true,0.7
+true,=true,0.7
+false,=true,0.01
 
 Queries
 B-E|
 B-E|J=true
 P(B=true|J=true,M=true),A-E
-
 

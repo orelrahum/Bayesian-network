@@ -64,15 +64,12 @@ public class VarElim {
 		for (int i=0;i<CPT_vec.size();i++) {
 			for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
 				if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
-					System.out.println("lilihjvgdsijfsdjglidsmflm");
 					CPT_vec_temp.add(CPT_vec.get(i));
-					//CPT_vec.remove(CPT_vec.get(i));
 					CPT_vec.remove(i);
 					i--;
 				}
 			}
 		}
-		System.out.println(CPT_vec_temp.size());
 		int killIndex=Net.findByName(KillNow);
 		CPT tempKill=new CPT(Net.Vars.get(killIndex).cpt);
 		boolean haveParent=false;
