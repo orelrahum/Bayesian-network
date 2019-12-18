@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VarElim {
+	public static int JoinNum=0;
+	public static int EliminateNum=0;
 
 	public static String VarElimAnswer(Network Net,String Query) {
 		String Answer=new String("varelim");
@@ -10,8 +12,8 @@ public class VarElim {
 		ArrayList<String> given_the_value = new ArrayList<String>();
 		ArrayList<String> WhatToKill = new ArrayList<String>();
 		ArrayList<CPT> CPT_vec = new ArrayList<CPT>();
-		int JoinNum=0;
-		int EliminateNum=0;
+		JoinNum=0;
+		EliminateNum=0;	
 		CPT_vec.clear();
 		WhatToKill.clear();
 		given_the_name.clear();
@@ -81,7 +83,11 @@ public class VarElim {
 				haveChild=true;
 			}
 			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
-			//			CPT afterEliminate=Eliminate(AfterJoin);
+			System.out.println("its after the join :");
+			AfterJoin.print();
+			CPT afterEliminate=Eliminate(AfterJoin);
+			System.out.println("its after elim :");
+			afterEliminate.print();
 			//CPT_vec.add(afterEliminate);
 
 			WhatToKill.remove(0);
@@ -103,8 +109,8 @@ public class VarElim {
 						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
 							for (int k=0;k<tempKill.lines.size();k++) {
 								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
-									System.out.println("your prob is "+vec.get(i).lines.get(j).prob + "and you on line : " + k);
-									tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;}
+									tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;
+									JoinNum++;}
 							}
 						}
 					}
@@ -119,19 +125,46 @@ public class VarElim {
 		if (!haveParent && haveChild) {
 
 		}
-		tempKill.print();
 		return tempKill;
 	}
 
 
 
 	public static CPT Eliminate(CPT AfterJoin) {
-		int numLines=AfterJoin.lines.size()-2;
-		while (!AfterJoin.lines.get(0).parents.parents_values.isEmpty()) {
-				if (!AfterJoin.lines.get(0).Value.contains(AfterJoin.lines.get(1).Value)) {
-					break;
+
+		for (int i=0;i<AfterJoin.lines.size();i++) {
+			for (int j=i+1;j<AfterJoin.lines.size();j++) {
+				boolean compare=CompareLine(AfterJoin.lines.get(i),AfterJoin.lines.get(j));
+				if (compare) {
+					System.out.println("dsadasdsda");
+					AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
+					AfterJoin.lines.get(j).prob+=AfterJoin.lines.get(i).prob;
+					System.out.println(AfterJoin.lines.get(i).prob);
+				}
+				if (AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(i).Value)){}
 			}
-				
 		}
+		
+		
+		for (int i=0;i<AfterJoin.lines.size();i++) {
+			for(int j=i+1;j<AfterJoin.lines.size();j++)
+			if (!AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(j).Value)) {
+				System.out.println("sfijgmfgpomsdogbdginblikdmbidfmnbdimjkdpfombofdmvbodfmbpo");
+				AfterJoin.lines.remove(j);
+				j--;
+			}	
+		}
+
+
 		return AfterJoin;}
+
+	public static boolean CompareLine (LineCPT a ,LineCPT b) {
+		for (int i=0;i<a.parents.parents_values.size();i++) {
+			if (!a.parents.parents_values.get(i).contains(b.parents.parents_values.get(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
