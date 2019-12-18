@@ -77,10 +77,13 @@ public class VarElim {
 			boolean haveChild=false;
 			if (Net.Vars.get(killIndex).parents.size()>0) {
 				haveParent=true;
+
 			}
 			if (Net.Vars.get(killIndex).children.size()>0) {
 				haveChild=true;
 			}
+			System.out.println("have parents :" + haveParent);
+			System.out.println("have haveChild :" + haveChild);
 			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
 			System.out.println("its after the join :");
 			System.out.println();
@@ -95,15 +98,14 @@ public class VarElim {
 			CPT_vec_temp.clear();
 		}
 
-
+		System.out.println("we used "+JoinNum+" Joins");
+		System.out.println("we used "+EliminateNum+" Eliminate");
 		return Answer;
 	}
 
 
 	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
 		if (haveParent && haveChild) {
-
-
 			for (int i=0;i<vec.size();i++) {
 				for(int j=0;j<vec.get(i).lines.size();j++) {
 					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
@@ -123,9 +125,25 @@ public class VarElim {
 		if (haveParent && !haveChild) {
 
 		}
-		if (!haveParent && haveChild) {
-
-		}
+//		if (!haveParent && haveChild) {
+//			for (int i=0;i<vec.size();i++) {
+//				for(int j=0;j<vec.get(i).lines.size();j++) {
+//					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
+//						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
+//							for (int k=0;k<tempKill.lines.size();k++) {
+//								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
+//									vec.get(0).lines.get(j).prob*=tempKill.lines.get(k).prob;
+//									JoinNum++;}
+//							}
+//						}
+//					}
+//
+//				}
+//			}	
+//			tempKill=new CPT(vec.get(0));
+//		}
+		
+		
 		return tempKill;
 	}
 
@@ -143,14 +161,14 @@ public class VarElim {
 				if (AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(i).Value)){}
 			}
 		}
-		
-		
+
+
 		for (int i=0;i<AfterJoin.lines.size();i++) {
 			for(int j=i+1;j<AfterJoin.lines.size();j++)
-			if (!AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(j).Value)) {
-				AfterJoin.lines.remove(j);
-				j--;
-			}	
+				if (!AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(j).Value)) {
+					AfterJoin.lines.remove(j);
+					j--;
+				}	
 		}
 
 		EliminateNum++;
