@@ -60,7 +60,6 @@ public class VarElim {
 		}
 
 		while(WhatToKill.size()>0) {
-			//CPT tempKill=new CPT();
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++) {
@@ -84,11 +83,13 @@ public class VarElim {
 			}
 			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
 			System.out.println("its after the join :");
+			System.out.println();
 			AfterJoin.print();
 			CPT afterEliminate=Eliminate(AfterJoin);
+			System.out.println();
 			System.out.println("its after elim :");
 			afterEliminate.print();
-			//CPT_vec.add(afterEliminate);
+			CPT_vec.add(afterEliminate);
 
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
@@ -136,10 +137,8 @@ public class VarElim {
 			for (int j=i+1;j<AfterJoin.lines.size();j++) {
 				boolean compare=CompareLine(AfterJoin.lines.get(i),AfterJoin.lines.get(j));
 				if (compare) {
-					System.out.println("dsadasdsda");
 					AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
 					AfterJoin.lines.get(j).prob+=AfterJoin.lines.get(i).prob;
-					System.out.println(AfterJoin.lines.get(i).prob);
 				}
 				if (AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(i).Value)){}
 			}
@@ -149,13 +148,12 @@ public class VarElim {
 		for (int i=0;i<AfterJoin.lines.size();i++) {
 			for(int j=i+1;j<AfterJoin.lines.size();j++)
 			if (!AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(j).Value)) {
-				System.out.println("sfijgmfgpomsdogbdginblikdmbidfmnbdimjkdpfombofdmvbodfmbpo");
 				AfterJoin.lines.remove(j);
 				j--;
 			}	
 		}
 
-
+		EliminateNum++;
 		return AfterJoin;}
 
 	public static boolean CompareLine (LineCPT a ,LineCPT b) {
