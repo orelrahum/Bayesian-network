@@ -80,14 +80,16 @@ public class VarElim {
 
 	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
 		if (haveParent && haveChild) {
-			for (int k=0;k<tempKill.lines.size();k++) {
 
-				for (int i=0;i<vec.size();i++) {
-					for(int j=0;j<vec.get(i).lines.size();j++) {
-						for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
-							if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z)) &&tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))) {
+
+			for (int i=0;i<vec.size();i++) {
+				for(int j=0;j<vec.get(i).lines.size();j++) {
+					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
+						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
+							for (int k=0;k<tempKill.lines.size();k++) {
+								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
 								System.out.println("your prob is "+vec.get(i).lines.get(j).prob + "and you on line : " + k);
-								tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;
+								tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;}
 							}
 						}
 					}
