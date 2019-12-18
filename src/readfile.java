@@ -70,7 +70,7 @@ public class readfile {
 								if (line.contains(",")) {
 									String CTPtemp  []=line.split(",");
 									int j=0;
-									double sumProb=0;
+									float sumProb=0;
 									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
 										String ParentName=Net.Vars.get(index).parents.get(i).name;
 										tempParents.parents_names.add(ParentName);
@@ -79,20 +79,17 @@ public class readfile {
 									}
 									j=(j+1);
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
-										System.out.println(line);
-										System.out.println("j is :" + j);
-										System.out.println("j after :" + j);
 										String ValueName=Net.Vars.get(index).values.get(i);
-										double ProbForVar=Double.parseDouble(CTPtemp[j]);
+										float ProbForVar=Float.parseFloat(CTPtemp[j]);
 										ProbForVar=General.round(ProbForVar);
 										sumProb+=ProbForVar;
 										tempLine=new LineCPT(tempParents, ValueName, ProbForVar);
 										Net.Vars.get(index).cpt.lines.add(tempLine);
 										j=j+2;
 									}
-									double comp=1-sumProb;
+									float comp=1-sumProb;
 									comp=General.round(comp);
-									double sumOfValues=Net.Vars.get(index).values.size();
+									float sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
 									tempLine=new LineCPT(tempParents ,LastValueName,comp);
 									Net.Vars.get(index).cpt.lines.add(tempLine);

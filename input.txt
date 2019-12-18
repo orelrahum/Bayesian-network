@@ -31,10 +31,9 @@ false,=true,0.05
 
 Var M
 Values: true,false
-Parents: A
+Parents: none
 CPT:
-true,=true,0.7
-false,=true,0.01
+=true,0.7
 
 Queries
 B-E|
