@@ -40,76 +40,94 @@ public class VarElim {
 		for (int i=0;i<Net.Vars.size();i++) {
 			CPT temp= new CPT (Net.Vars.get(i).cpt);
 			CPT_vec.add(temp);
-		}
 
-		while(WhatToKill.size()>0) {
-			//CPT tempKill=new CPT();
-			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
-			String KillNow=WhatToKill.get(0);
-			for (int i=0;i<CPT_vec.size();i++) {
-				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
-					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
-						CPT_vec_temp.add(CPT_vec.get(i));
-						//CPT_vec.remove(CPT_vec.get(i));
-						//CPT_vec.remove(i);
+		}
+		for (int i=0;i<given_the_name.size();i++) {
+			for (int j=0;j<CPT_vec.size();j++) {
+				if (given_the_name.contains(CPT_vec.get(j).Name)){
+					for (int k=0;k<CPT_vec.get(j).lines.size();k++) {
+						if (!CPT_vec.get(j).lines.get(k).Value.contains(given_the_value.get(i))) {
+							CPT_vec.get(j).lines.remove(k);
+							k--;
+							
 					}
 				}
 			}
-			int killIndex=Net.findByName(KillNow);
-			CPT tempKill=new CPT(Net.Vars.get(killIndex).cpt);
-			boolean haveParent=false;
-			boolean haveChild=false;
-			if (Net.Vars.get(killIndex).parents.size()>0) {
-				haveParent=true;
-			}
-			if (Net.Vars.get(killIndex).children.size()>0) {
-				haveChild=true;
-			}
-			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
-			//			CPT afterEliminate=Eliminate(AfterJoin);
-			//CPT_vec.add(afterEliminate);
-
-			WhatToKill.remove(0);
-			CPT_vec_temp.clear();
 		}
 
+	}
 
-		return Answer;
+	while(WhatToKill.size()>0) {
+		//CPT tempKill=new CPT();
+		ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
+		String KillNow=WhatToKill.get(0);
+		for (int i=0;i<CPT_vec.size();i++) {
+			for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
+				if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
+					System.out.println("lilihjvgdsijfsdjglidsmflm");
+					CPT_vec_temp.add(CPT_vec.get(i));
+					//CPT_vec.remove(CPT_vec.get(i));
+					CPT_vec.remove(i);
+					i--;
+				}
+			}
+		}
+		System.out.println(CPT_vec_temp.size());
+		int killIndex=Net.findByName(KillNow);
+		CPT tempKill=new CPT(Net.Vars.get(killIndex).cpt);
+		boolean haveParent=false;
+		boolean haveChild=false;
+		if (Net.Vars.get(killIndex).parents.size()>0) {
+			haveParent=true;
+		}
+		if (Net.Vars.get(killIndex).children.size()>0) {
+			haveChild=true;
+		}
+		CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
+		//			CPT afterEliminate=Eliminate(AfterJoin);
+		//CPT_vec.add(afterEliminate);
+
+		WhatToKill.remove(0);
+		CPT_vec_temp.clear();
 	}
 
 
-	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
-		if (haveParent && haveChild) {
+	return Answer;
+}
 
 
-			for (int i=0;i<vec.size();i++) {
-				for(int j=0;j<vec.get(i).lines.size();j++) {
-					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
-						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
-							for (int k=0;k<tempKill.lines.size();k++) {
-								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
+public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
+	if (haveParent && haveChild) {
+
+
+		for (int i=0;i<vec.size();i++) {
+			for(int j=0;j<vec.get(i).lines.size();j++) {
+				for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
+					if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
+						for (int k=0;k<tempKill.lines.size();k++) {
+							if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
 								System.out.println("your prob is "+vec.get(i).lines.get(j).prob + "and you on line : " + k);
 								tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;}
-							}
 						}
 					}
-
 				}
+
 			}
-
 		}
-		if (haveParent && !haveChild) {
 
-		}
-		if (!haveParent && haveChild) {
-
-		}
-		tempKill.print();
-		return tempKill;
 	}
+	if (haveParent && !haveChild) {
+
+	}
+	if (!haveParent && haveChild) {
+
+	}
+	tempKill.print();
+	return tempKill;
+}
 
 
 
-	public static CPT Eliminate(CPT AfterJoin) {
-		return AfterJoin;}
+public static CPT Eliminate(CPT AfterJoin) {
+	return AfterJoin;}
 }
