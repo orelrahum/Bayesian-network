@@ -8,7 +8,7 @@ public class VarElim {
 	public static boolean ifChange=false;
 	public static String VarElimAnswer(Network Net,String Query) {
 		String Answer=new String("varelim");
-		float lastProb=0;
+		double lastProb=0;
 		ArrayList<String> given_the_name = new ArrayList<String>();
 		ArrayList<String> given_the_value = new ArrayList<String>();
 		ArrayList<String> WhatToKill = new ArrayList<String>();
@@ -29,7 +29,7 @@ public class VarElim {
 			String Temp2=new String (firstSplit[1]);
 			Temp2=Temp2.replace(")", "");
 			String SecondAplit2[]=Temp2.split("=|,");
-			
+
 			for (int i=0;i<SecondAplit2.length-1;i=i+2) {
 				given_the_name.add(SecondAplit2[i]);
 				given_the_value.add(SecondAplit2[i+1]);
@@ -96,11 +96,16 @@ public class VarElim {
 			System.out.println("its after the join :");
 			System.out.println();
 			AfterJoin.print();
-			CPT afterEliminate=Eliminate(AfterJoin ,KillNow);
-			System.out.println();
-			System.out.println("its after elim :");
-			afterEliminate.print();
-			CPT_vec.add(afterEliminate);
+			if (haveParent) {
+				CPT afterEliminate=Eliminate(AfterJoin ,KillNow);
+				System.out.println();
+				System.out.println("its after elim :");
+				afterEliminate.print();
+				CPT_vec.add(afterEliminate);
+			}
+			if (!haveParent) {
+				CPT_vec.add(AfterJoin);
+			}
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
@@ -326,7 +331,7 @@ public class VarElim {
 
 
 	public static void Normalize(CPT last) {
-		float x=0;
+		double x=0;
 		for (int i=0;i<last.lines.size();i++) {
 			x+=last.lines.get(i).prob;
 			EliminateNum++;

@@ -24,11 +24,11 @@ public class CPT {
 class LineCPT {
 	ParentsCPT parents=new ParentsCPT();
 	String Value=new String();
-	float prob;
+	double prob;
 
 	public LineCPT() {}
 
-	public LineCPT(ParentsCPT Parents, String Val , float probi) {
+	public LineCPT(ParentsCPT Parents, String Val , double probi) {
 		Value+=Val;
 		prob=probi;
 		parents=new ParentsCPT (Parents);

@@ -1,9 +1,9 @@
 
 public class General {
-	public static float round(float x) {
+	public static double round(double x) {
 		x=x*100000;
 		int y=(int)x;
-		x=(float)y;
+		x=(double)y;
 		x=x/100000;
 		return x;
 	}
