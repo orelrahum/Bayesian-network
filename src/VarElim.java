@@ -109,7 +109,7 @@ public class VarElim {
 			afterEliminate.print();
 			CPT_vec.add(afterEliminate);
 
-
+			System.out.println("what to kill size" + WhatToKill.size());
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
@@ -192,6 +192,10 @@ public class VarElim {
 
 
 	public static CPT Join2Tables(CPT A, CPT B ,String NameToKill , boolean ifChange) {
+		if (A.lines.isEmpty() || B.lines.isEmpty()) {
+			if (A.lines.isEmpty()) {return B;}
+			if (B.lines.isEmpty()) {return A;}
+		}
 		if (A.lines.get(0).parents.parents_names.size()>B.lines.get(0).parents.parents_names.size()) {
 
 			for (int i=0;i<A.lines.size();i++) {
@@ -233,6 +237,10 @@ public class VarElim {
 	}
 
 	public static CPT JoinKillCPT(CPT tempKill,CPT table) {
+		if (tempKill.lines.isEmpty() || table.lines.isEmpty()) {
+			if (tempKill.lines.isEmpty()) {return tempKill;}
+			if (table.lines.isEmpty()) {return table;}
+		}
 		if (tempKill.lines.get(0).parents.parents_names.size()>table.lines.get(0).parents.parents_names.size()) {
 			for(int j=0;j<table.lines.size();j++) {
 				for (int z=0;z<table.lines.get(j).parents.parents_names.size();z++) {
