@@ -92,7 +92,7 @@ public class VarElim {
 			System.out.println("its after the join :");
 			System.out.println();
 			AfterJoin.print();
-			CPT afterEliminate=Eliminate(AfterJoin);
+			CPT afterEliminate=Eliminate(AfterJoin ,KillNow);
 			System.out.println();
 			System.out.println("its after elim :");
 			afterEliminate.print();
@@ -100,6 +100,26 @@ public class VarElim {
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
+		//		int NameIndex=Net.findByName(Name);
+		//		CPT CTPName=Net.Vars.get(NameIndex).cpt;
+		//		boolean haveParent=false;
+		//		boolean haveChild=false;
+		//		if (Net.Vars.get(NameIndex).parents.size()>0) {
+		//			haveParent=true;
+		//
+		//		}
+		//		if (Net.Vars.get(NameIndex).children.size()>0) {
+		//			haveChild=true;
+		//		}
+		//		CPT AfterJoin=Join(CPT_vec , CTPName , haveParent ,haveChild );
+		//		System.out.println("its after the join :");
+		//		System.out.println();
+		//		AfterJoin.print();
+		//		CPT afterEliminate=Eliminate(AfterJoin);
+		//		System.out.println();
+		//		System.out.println("its after elim :");
+		//		afterEliminate.print();
+
 
 		System.out.println("we used "+JoinNum+" Joins");
 		System.out.println("we used "+EliminateNum+" Eliminate");
@@ -128,7 +148,7 @@ public class VarElim {
 			}
 			else {
 				newTemp=new CPT (vec.get(0));
-				
+
 			}
 			newTemp=JoinKillCPT(tempKill, newTemp);
 
@@ -214,34 +234,63 @@ public class VarElim {
 
 
 
-	public static CPT Eliminate(CPT AfterJoin) {
+	public static CPT Eliminate(CPT AfterJoin ,String tempKill) {
 
-		for (int i=0;i<AfterJoin.lines.size();i++) {
-			for (int j=i+1;j<AfterJoin.lines.size();j++) {
-				boolean compare=CompareLine(AfterJoin.lines.get(i),AfterJoin.lines.get(j));
-				if (compare) {
-					AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
-					AfterJoin.lines.get(j).prob+=AfterJoin.lines.get(i).prob;
+		if (AfterJoin.Name.contains(tempKill)) {
+
+			for (int i=0;i<AfterJoin.lines.size();i++) {
+				for (int j=i+1;j<AfterJoin.lines.size();j++) {
+					boolean compare=CompareLinePather(AfterJoin.lines.get(i),AfterJoin.lines.get(j));
+					if (compare) {
+						AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
+						AfterJoin.lines.get(j).prob+=AfterJoin.lines.get(i).prob;
+					}		
 				}
-				if (AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(i).Value)){}
+			}
+			for (int i=0;i<AfterJoin.lines.size();i++) {
+				for(int j=i+1;j<AfterJoin.lines.size();j++)
+					if (!AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(j).Value)) {
+						AfterJoin.lines.remove(j);
+						j--;
+					}	
 			}
 		}
+		if (!AfterJoin.Name.contains(tempKill)) {
+			for (int i=0;i<AfterJoin.lines.size();i++) {
+				for (int j=i+1;j<AfterJoin.lines.size();j++) {
+					boolean compare=CompareLine(AfterJoin.lines.get(i),AfterJoin.lines.get(j));
+					if (compare) {
+						AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
+					}		
+				}
+			}
 
-
-		for (int i=0;i<AfterJoin.lines.size();i++) {
-			for(int j=i+1;j<AfterJoin.lines.size();j++)
-				if (!AfterJoin.lines.get(i).Value.contains(AfterJoin.lines.get(j).Value)) {
-					AfterJoin.lines.remove(j);
-					j--;
-				}	
+			for (int k=0;k<AfterJoin.lines.get(0).parents.parents_values.size();k++) {
+				for (int i=0;i<AfterJoin.lines.size();i++) {
+					for(int j=i+1;j<AfterJoin.lines.size();j++)
+						if (AfterJoin.lines.get(i).parents.parents_names.get(k).contains(tempKill) &&AfterJoin.lines.get(j).parents.parents_names.get(k).contains(tempKill)) {
+							AfterJoin.lines.remove(j);
+							j--;
+						}	
+				}
+			}
 		}
 
 		EliminateNum++;
 		return AfterJoin;}
 
-	public static boolean CompareLine (LineCPT a ,LineCPT b) {
+	public static boolean CompareLinePather (LineCPT a ,LineCPT b) {
 		for (int i=0;i<a.parents.parents_values.size();i++) {
 			if (!a.parents.parents_values.get(i).contains(b.parents.parents_values.get(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean CompareLine (LineCPT a ,LineCPT b) {
+		for (int i=0;i<a.parents.parents_values.size();i++) {
+			if (!a.Value.contains(b.Value)) {
 				return false;
 			}
 		}
