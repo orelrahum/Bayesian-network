@@ -5,7 +5,7 @@ import java.util.Map;
 public class VarElim {
 	public static int JoinNum=0;
 	public static int EliminateNum=0;
-
+	public static boolean ifChange=false;
 	public static String VarElimAnswer(Network Net,String Query) {
 		String Answer=new String("varelim");
 		ArrayList<String> given_the_name = new ArrayList<String>();
@@ -105,47 +105,129 @@ public class VarElim {
 
 
 	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
+		ifChange=false;
+		CPT newTemp=new CPT();
 		if (haveParent && haveChild) {
-			for (int i=0;i<vec.size();i++) {
-				for(int j=0;j<vec.get(i).lines.size();j++) {
-					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
-						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
-							for (int k=0;k<tempKill.lines.size();k++) {
-								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
-									tempKill.lines.get(k).prob*=vec.get(i).lines.get(j).prob;
-									JoinNum++;}
-							}
+			if (vec.size()>1) {
+				for (int i=0;i<vec.size();i++) {
+					for (int j=i+1;j<vec.size();j++) {
+						ifChange=false;
+						newTemp=Join2Tables(vec.get(i), vec.get(j), tempKill.Name ,ifChange);
+						if (ifChange) {
+							vec.remove(i);
+							vec.remove(j);
+							j--;
+							i--;
 						}
+						ifChange=false;
 					}
-
 				}
 			}
+			newTemp=JoinKillCPT(tempKill, newTemp);
+
 
 		}
 		if (haveParent && !haveChild) {
 
 		}
-//		if (!haveParent && haveChild) {
-//			for (int i=0;i<vec.size();i++) {
-//				for(int j=0;j<vec.get(i).lines.size();j++) {
-//					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
-//						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
-//							for (int k=0;k<tempKill.lines.size();k++) {
-//								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
-//									vec.get(0).lines.get(j).prob*=tempKill.lines.get(k).prob;
-//									JoinNum++;}
-//							}
-//						}
-//					}
-//
-//				}
-//			}	
-//			tempKill=new CPT(vec.get(0));
-//		}
-		
-		
-		return tempKill;
+		//		if (!haveParent && haveChild) {
+		//			for (int i=0;i<vec.size();i++) {
+		//				for(int j=0;j<vec.get(i).lines.size();j++) {
+		//					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
+		//						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
+		//							for (int k=0;k<tempKill.lines.size();k++) {
+		//								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
+		//									vec.get(0).lines.get(j).prob*=tempKill.lines.get(k).prob;
+		//									JoinNum++;}
+		//							}
+		//						}
+		//					}
+		//
+		//				}
+		//			}	
+		//			tempKill=new CPT(vec.get(0));
+		//		}
+
+
+		return newTemp;
 	}
+
+
+	public static CPT Join2Tables(CPT A, CPT B ,String NameToKill , boolean ifChange) {
+		if (A.lines.get(0).parents.parents_names.size()>B.lines.get(0).parents.parents_names.size()) {
+
+			for (int i=0;i<A.lines.size();i++) {
+				for (int j=0;j<B.lines.size();j++) {
+					for (int k=0;k<A.lines.get(i).parents.parents_names.size();k++) {
+						for (int z=0;z<B.lines.get(j).parents.parents_names.size();z++) {
+							if (A.lines.get(i).parents.parents_names.get(k).contains(NameToKill) && B.lines.get(j).parents.parents_names.get(z).contains(NameToKill)) {
+								if (A.lines.get(i).parents.parents_values.get(k).contains(B.lines.get(j).parents.parents_values.get(z))){
+									A.lines.get(i).prob*=B.lines.get(j).prob;
+									ifChange=true;
+									JoinNum++;
+								}
+							}
+						}
+					}
+				}
+			}
+			return A;
+		}
+
+		else {
+			for (int i=0;i<A.lines.size();i++) {
+				for (int j=0;j<B.lines.size();j++) {
+					for (int k=0;k<A.lines.get(i).parents.parents_names.size();k++) {
+						for (int z=0;z<B.lines.get(j).parents.parents_names.size();z++) {
+							if (A.lines.get(i).parents.parents_names.get(k).contains(NameToKill) && B.lines.get(j).parents.parents_names.get(z).contains(NameToKill)) {
+								if (A.lines.get(i).parents.parents_values.get(k).contains(B.lines.get(j).parents.parents_values.get(z))){
+									B.lines.get(j).prob*=A.lines.get(i).prob;
+									ifChange=true;
+									JoinNum++;
+								}
+							}
+						}
+					}
+				}
+			}	
+		}
+		System.out.println("its after bombine 2 talse :");
+		B.print();
+		return B;
+	}
+
+	public static CPT JoinKillCPT(CPT tempKill,CPT table) {
+		if (tempKill.lines.get(0).parents.parents_names.size()>table.lines.get(0).parents.parents_names.size()) {
+			for(int j=0;j<table.lines.size();j++) {
+				for (int z=0;z<table.lines.get(j).parents.parents_names.size();z++) {
+					if (tempKill.Name.contains(table.lines.get(j).parents.parents_names.get(z))) {
+						for (int k=0;k<tempKill.lines.size();k++) {
+							if (tempKill.lines.get(k).Value.contains(table.lines.get(j).parents.parents_values.get(z))){
+								tempKill.lines.get(k).prob*=table.lines.get(j).prob;
+								JoinNum++;}
+						}
+					}
+				}
+			}
+			return tempKill;
+		}
+		else {
+			for(int j=0;j<table.lines.size();j++) {
+				for (int z=0;z<table.lines.get(j).parents.parents_names.size();z++) {
+					if (tempKill.Name.contains(table.lines.get(j).parents.parents_names.get(z))) {
+						for (int k=0;k<tempKill.lines.size();k++) {
+							if (tempKill.lines.get(k).Value.contains(table.lines.get(j).parents.parents_values.get(z))){
+								table.lines.get(j).prob*=tempKill.lines.get(k).prob;
+								JoinNum++;}
+						}
+					}
+				}
+			}
+
+		}
+		return table;
+	}
+
 
 
 
