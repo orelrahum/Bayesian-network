@@ -82,9 +82,13 @@ public class VarElim {
 			if (Net.Vars.get(killIndex).children.size()>0) {
 				haveChild=true;
 			}
-			System.out.println("have parents :" + haveParent);
-			System.out.println("have haveChild :" + haveChild);
 			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
+			for (int i=0;i<CPT_vec.size();i++) {
+				if (CPT_vec.get(i).Name.contains(tempKill.Name)) {
+					CPT_vec.remove(i);
+					i--;
+				}
+			}
 			System.out.println("its after the join :");
 			System.out.println();
 			AfterJoin.print();
@@ -93,7 +97,6 @@ public class VarElim {
 			System.out.println("its after elim :");
 			afterEliminate.print();
 			CPT_vec.add(afterEliminate);
-
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
@@ -107,7 +110,7 @@ public class VarElim {
 	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
 		ifChange=false;
 		CPT newTemp=new CPT();
-		if (haveParent && haveChild) {
+		if ( haveChild) {
 			if (vec.size()>1) {
 				for (int i=0;i<vec.size();i++) {
 					for (int j=i+1;j<vec.size();j++) {
@@ -123,32 +126,14 @@ public class VarElim {
 					}
 				}
 			}
+			else {
+				newTemp=new CPT (vec.get(0));
+				
+			}
 			newTemp=JoinKillCPT(tempKill, newTemp);
 
 
 		}
-		if (haveParent && !haveChild) {
-
-		}
-		//		if (!haveParent && haveChild) {
-		//			for (int i=0;i<vec.size();i++) {
-		//				for(int j=0;j<vec.get(i).lines.size();j++) {
-		//					for (int z=0;z<vec.get(i).lines.get(j).parents.parents_names.size();z++) {
-		//						if (tempKill.Name.contains(vec.get(i).lines.get(j).parents.parents_names.get(z))) {
-		//							for (int k=0;k<tempKill.lines.size();k++) {
-		//								if (tempKill.lines.get(k).Value.contains(vec.get(i).lines.get(j).parents.parents_values.get(z))){
-		//									vec.get(0).lines.get(j).prob*=tempKill.lines.get(k).prob;
-		//									JoinNum++;}
-		//							}
-		//						}
-		//					}
-		//
-		//				}
-		//			}	
-		//			tempKill=new CPT(vec.get(0));
-		//		}
-
-
 		return newTemp;
 	}
 
@@ -191,8 +176,6 @@ public class VarElim {
 				}
 			}	
 		}
-		System.out.println("its after bombine 2 talse :");
-		B.print();
 		return B;
 	}
 
