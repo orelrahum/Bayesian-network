@@ -26,5 +26,3 @@ false,maybe,=go,0.45,=stay,0.25
 
 Queries
 P(C=run|B=set,A=true),
-A-C|B=noset
-P(A=true|C=run),B

@@ -24,20 +24,27 @@ public class VarElim {
 		Temp=Temp.substring(2);
 		String secondSplit[]=Temp.split("=");
 		String Name=new String(secondSplit[0]);
+		System.out.println("the name to check is :" + Name);
 		String Value=new String (secondSplit[1]);
+		System.out.println("the value to check is :" + Value);
 		if (firstSplit.length>1) {
 			String Temp2=new String (firstSplit[1]);
-			Temp2=Temp2.replace(")", "");
-			String SecondAplit2[]=Temp2.split("=|,");
-
-			for (int i=0;i<SecondAplit2.length-1;i=i+2) {
-				given_the_name.add(SecondAplit2[i]);
-				given_the_value.add(SecondAplit2[i+1]);
+			String SecondAplit2[]=Temp2.split("\\)");
+			String Temp3=new String (SecondAplit2[0]);
+			String giventhe[]=Temp3.split(",|=");
+			for (int i=0;i<giventhe.length-1;i=i+2) {
+				given_the_name.add(giventhe[i]);
+				given_the_value.add(giventhe[i+1]);
 			}
-			String Temp3=new String (SecondAplit2[SecondAplit2.length-1]);
-			String ThirdSplit[]=Temp3.split("-");
-			for (int i=0;i<ThirdSplit.length;i++) {
-				WhatToKill.add(ThirdSplit[i]);
+			if (SecondAplit2.length>1) {
+				if (SecondAplit2[1].length()>1) {
+					String Temp4=new String (SecondAplit2[1]);
+					Temp4=Temp4.substring(1);
+					String ThirdSplit[]=Temp4.split("-");
+					for (int i=0;i<ThirdSplit.length;i++) {
+						WhatToKill.add(ThirdSplit[i]);
+					}
+				}
 			}
 		}
 
@@ -60,7 +67,6 @@ public class VarElim {
 			}
 
 		}
-
 		while(WhatToKill.size()>0) {
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
@@ -76,6 +82,7 @@ public class VarElim {
 				}
 			}
 			int killIndex=Net.findByName(KillNow);
+			System.out.println(KillNow);
 			CPT tempKill=new CPT(Net.Vars.get(killIndex).cpt);
 			boolean haveParent=false;
 			boolean haveChild=false;
