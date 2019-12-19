@@ -81,14 +81,12 @@ public class readfile {
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
 										String ValueName=Net.Vars.get(index).values.get(i);
 										float ProbForVar=Float.parseFloat(CTPtemp[j]);
-										ProbForVar=General.round(ProbForVar);
 										sumProb+=ProbForVar;
 										tempLine=new LineCPT(tempParents, ValueName, ProbForVar);
 										Net.Vars.get(index).cpt.lines.add(tempLine);
 										j=j+2;
 									}
 									float comp=1-sumProb;
-									comp=General.round(comp);
 									float sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
 									tempLine=new LineCPT(tempParents ,LastValueName,comp);

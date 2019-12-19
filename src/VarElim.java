@@ -8,6 +8,7 @@ public class VarElim {
 	public static boolean ifChange=false;
 	public static String VarElimAnswer(Network Net,String Query) {
 		String Answer=new String("varelim");
+		float lastProb=0;
 		ArrayList<String> given_the_name = new ArrayList<String>();
 		ArrayList<String> given_the_value = new ArrayList<String>();
 		ArrayList<String> WhatToKill = new ArrayList<String>();
@@ -28,6 +29,7 @@ public class VarElim {
 			String Temp2=new String (firstSplit[1]);
 			Temp2=Temp2.replace(")", "");
 			String SecondAplit2[]=Temp2.split("=|,");
+			
 			for (int i=0;i<SecondAplit2.length-1;i=i+2) {
 				given_the_name.add(SecondAplit2[i]);
 				given_the_value.add(SecondAplit2[i+1]);
@@ -63,11 +65,13 @@ public class VarElim {
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++) {
-				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
-					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
-						CPT_vec_temp.add(CPT_vec.get(i));
-						CPT_vec.remove(i);
-						i--;
+				if (!CPT_vec.get(i).lines.isEmpty() || CPT_vec.get(i).lines.size()>1){
+					for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
+						if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
+							CPT_vec_temp.add(CPT_vec.get(i));
+							CPT_vec.remove(i);
+							i--;
+						}
 					}
 				}
 			}
@@ -100,34 +104,47 @@ public class VarElim {
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
-				int NameIndex=Net.findByName(Name);
-				CPT CTPName=Net.Vars.get(NameIndex).cpt;
-				boolean haveParent=false;
-				boolean haveChild=false;
-				if (Net.Vars.get(NameIndex).parents.size()>0) {
-					haveParent=true;
-		
+		int NameIndex=Net.findByName(Name);
+		CPT CTPName=Net.Vars.get(NameIndex).cpt;
+		boolean haveParent=false;
+		boolean haveChild=false;
+		if (Net.Vars.get(NameIndex).parents.size()>0) {
+			haveParent=true;
+
+		}
+		if (Net.Vars.get(NameIndex).children.size()>0) {
+			haveChild=true;
+		}
+		CPT AfterJoin=Join(CPT_vec , CTPName , haveParent ,haveChild );
+		System.out.println("its after the join :");
+		System.out.println();
+		AfterJoin.print();
+		Normalize(AfterJoin);
+		System.out.println("after normalize :");
+		AfterJoin.print();
+		System.out.println("we used "+JoinNum+" Joins");
+		System.out.println("we used "+EliminateNum+" Eliminate");
+		if (AfterJoin.Name.contains(Name)){
+			for(int i=0;i<AfterJoin.lines.size();i++) {
+				if (AfterJoin.lines.get(i).Value.contains(Value)) {
+					AfterJoin.lines.get(i).prob=General.round(AfterJoin.lines.get(i).prob);
+					lastProb=AfterJoin.lines.get(i).prob;
 				}
-				if (Net.Vars.get(NameIndex).children.size()>0) {
-					haveChild=true;
-				}
-				CPT AfterJoin=Join(CPT_vec , CTPName , haveParent ,haveChild );
-				System.out.println("its after the join :");
-				System.out.println();
-				AfterJoin.print();
-				Normalize(AfterJoin);
-				System.out.println("after normalize :");
-				AfterJoin.print();
-				System.out.println("we used "+JoinNum+" Joins");
-				System.out.println("we used "+EliminateNum+" Eliminate");
-				
-				
-				for(int i=0;i<AfterJoin.lines.size();i++) {
-					if (AfterJoin.lines.get(i).Value.contains(Value)) {
-						System.out.println("the prob is!!!!!!!!!!!!!!!!!!!!!! "+AfterJoin.lines.get(i).prob);
+			}
+		}
+		if (!AfterJoin.Name.contains(Name)){
+			for(int i=0;i<AfterJoin.lines.size();i++) {
+				for(int j=0;j<AfterJoin.lines.get(i).parents.parents_names.size();j++) {
+					if (AfterJoin.lines.get(i).parents.parents_names.get(j).contains(Name)) {
+						if (AfterJoin.lines.get(i).parents.parents_values.get(j).contains(Value)) {
+							AfterJoin.lines.get(i).prob=General.round(AfterJoin.lines.get(i).prob);
+							lastProb=AfterJoin.lines.get(i).prob;
+						}
 					}
 				}
-
+			}
+		}
+		Answer=lastProb+","+EliminateNum+","+JoinNum;
 
 
 		return Answer;
@@ -271,16 +288,17 @@ public class VarElim {
 					}		
 				}
 			}
-
-			for (int k=0;k<AfterJoin.lines.get(0).parents.parents_values.size();k++) {
-				for (int i=0;i<AfterJoin.lines.size();i++) {
-					for(int j=i+1;j<AfterJoin.lines.size();j++)
-						if (AfterJoin.lines.get(i).parents.parents_names.get(k).contains(tempKill) &&AfterJoin.lines.get(j).parents.parents_names.get(k).contains(tempKill)) {
-							if (!AfterJoin.lines.get(i).parents.parents_values.get(k).contains(AfterJoin.lines.get(j).parents.parents_values.get(k))) {
-								AfterJoin.lines.remove(j);
-								j--;
-							}
-						}	
+			if (!AfterJoin.lines.isEmpty() || AfterJoin.lines.size()>1) {
+				for (int k=0;k<AfterJoin.lines.get(0).parents.parents_values.size();k++) {
+					for (int i=0;i<AfterJoin.lines.size();i++) {
+						for(int j=i+1;j<AfterJoin.lines.size();j++)
+							if (AfterJoin.lines.get(i).parents.parents_names.get(k).contains(tempKill) &&AfterJoin.lines.get(j).parents.parents_names.get(k).contains(tempKill)) {
+								if (!AfterJoin.lines.get(i).parents.parents_values.get(k).contains(AfterJoin.lines.get(j).parents.parents_values.get(k))) {
+									AfterJoin.lines.remove(j);
+									j--;
+								}
+							}	
+					}
 				}
 			}
 		}
@@ -305,8 +323,8 @@ public class VarElim {
 		}
 		return true;
 	}
-	
-	
+
+
 	public static void Normalize(CPT last) {
 		float x=0;
 		for (int i=0;i<last.lines.size();i++) {
@@ -320,7 +338,7 @@ public class VarElim {
 		for (int i=0;i<last.lines.size();i++) {
 			last.lines.get(i).prob*=x;
 		}
-		
+
 	}
 
 }
