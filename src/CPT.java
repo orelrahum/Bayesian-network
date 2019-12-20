@@ -41,7 +41,7 @@ class LineCPT {
 	}
 	public void print() {
 		parents.print();
-		System.out.print(Value+"=");
+		//System.out.print(",");
 		System.out.print(prob);
 	}
 }

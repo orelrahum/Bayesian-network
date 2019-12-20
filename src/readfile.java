@@ -79,16 +79,22 @@ public class readfile {
 									}
 									j=(j+1);
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
+										ParentsCPT tempParents2=new ParentsCPT(tempParents);
+									
 										String ValueName=Net.Vars.get(index).values.get(i);
 										double ProbForVar=Double.parseDouble(CTPtemp[j]);
+										tempParents2.parents_names.add(Net.Vars.get(index).name);
+										tempParents2.parents_values.add(ValueName);
 										sumProb+=ProbForVar;
-										tempLine=new LineCPT(tempParents, ValueName, ProbForVar);
+										tempLine=new LineCPT(tempParents2, ValueName, ProbForVar);
 										Net.Vars.get(index).cpt.lines.add(tempLine);
 										j=j+2;
 									}
 									double comp=1-sumProb;
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
+									tempParents.parents_names.add(Net.Vars.get(index).name);
+									tempParents.parents_values.add(LastValueName);
 									tempLine=new LineCPT(tempParents ,LastValueName,comp);
 									Net.Vars.get(index).cpt.lines.add(tempLine);
 								}
@@ -109,7 +115,7 @@ public class readfile {
 					while(line!=null && line.length()>1) {
 						if (line.charAt(1)=='(') {
 							String answer=new String();
-							answer=VarElim.VarElimAnswer(Net,line);
+							//answer=VarElim.VarElimAnswer(Net,line);
 							Net.Answers+=answer+"\n";
 						}
 						else {
