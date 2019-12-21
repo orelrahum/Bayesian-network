@@ -24,9 +24,7 @@ public class VarElim {
 		Temp=Temp.substring(2);
 		String secondSplit[]=Temp.split("=");
 		String Name=new String(secondSplit[0]);
-		System.out.println("the name to check is :" + Name);
 		String Value=new String (secondSplit[1]);
-		System.out.println("the value to check is :" + Value);
 		if (firstSplit.length>1) {
 			String Temp2=new String (firstSplit[1]);
 			String SecondAplit2[]=Temp2.split("\\)");
@@ -60,7 +58,6 @@ public class VarElim {
 						if (!CPT_vec.get(j).lines.get(k).Value.contains(given_the_value.get(i))) {
 							CPT_vec.get(j).lines.remove(k);
 							k--;
-
 						}
 					}
 				}
@@ -71,19 +68,16 @@ public class VarElim {
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++) {
-				if (!CPT_vec.get(i).lines.isEmpty() || CPT_vec.get(i).lines.size()>1){
-					for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
-						if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
-							CPT_vec_temp.add(CPT_vec.get(i));
-							CPT_vec.remove(i);
-							i--;
-						}
+				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
+					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
+						CPT_vec_temp.add(CPT_vec.get(i));
+						CPT_vec.remove(i);
+						i--;
 					}
 				}
 			}
+			System.out.println("we need to kill: "+CPT_vec_temp.size());
 			int killIndex=Net.findByName(KillNow);
-			System.out.println(KillNow);
-			CPT tempKill=new CPT(Net.Vars.get(killIndex).cpt);
 			boolean haveParent=false;
 			boolean haveChild=false;
 			if (Net.Vars.get(killIndex).parents.size()>0) {
@@ -93,66 +87,21 @@ public class VarElim {
 			if (Net.Vars.get(killIndex).children.size()>0) {
 				haveChild=true;
 			}
-			CPT AfterJoin=Join(CPT_vec_temp , tempKill , haveParent ,haveChild );
-			for (int i=0;i<CPT_vec.size();i++) {
-				if (CPT_vec.get(i).Name.contains(tempKill.Name)) {
-					CPT_vec.remove(i);
-					i--;
-				}
-			}
+			CPT AfterJoin=Join(CPT_vec_temp , KillNow , haveParent ,haveChild );
+
 			System.out.println("its after the join :");
 			System.out.println();
 			AfterJoin.print();
 			CPT afterEliminate=Eliminate(AfterJoin ,KillNow);
-			System.out.println();
-			System.out.println("its after elim :");
+			
+			System.out.println("its after the +++++ :");
 			afterEliminate.print();
 			CPT_vec.add(afterEliminate);
 
-			System.out.println("what to kill size" + WhatToKill.size());
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
-		int NameIndex=Net.findByName(Name);
-		CPT CTPName=Net.Vars.get(NameIndex).cpt;
-		boolean haveParent=false;
-		boolean haveChild=false;
-		if (Net.Vars.get(NameIndex).parents.size()>0) {
-			haveParent=true;
 
-		}
-		if (Net.Vars.get(NameIndex).children.size()>0) {
-			haveChild=true;
-		}
-		CPT AfterJoin=Join(CPT_vec , CTPName , haveParent ,haveChild );
-		System.out.println("its after the join :");
-		System.out.println();
-		AfterJoin.print();
-		Normalize(AfterJoin);
-		System.out.println("after normalize :");
-		AfterJoin.print();
-		System.out.println("we used "+JoinNum+" Joins");
-		System.out.println("we used "+EliminateNum+" Eliminate");
-		if (AfterJoin.Name.contains(Name)){
-			for(int i=0;i<AfterJoin.lines.size();i++) {
-				if (AfterJoin.lines.get(i).Value.contains(Value)) {
-					AfterJoin.lines.get(i).prob=General.round(AfterJoin.lines.get(i).prob);
-					lastProb=AfterJoin.lines.get(i).prob;
-				}
-			}
-		}
-		if (!AfterJoin.Name.contains(Name)){
-			for(int i=0;i<AfterJoin.lines.size();i++) {
-				for(int j=0;j<AfterJoin.lines.get(i).parents.parents_names.size();j++) {
-					if (AfterJoin.lines.get(i).parents.parents_names.get(j).contains(Name)) {
-						if (AfterJoin.lines.get(i).parents.parents_values.get(j).contains(Value)) {
-							AfterJoin.lines.get(i).prob=General.round(AfterJoin.lines.get(i).prob);
-							lastProb=AfterJoin.lines.get(i).prob;
-						}
-					}
-				}
-			}
-		}
 		Answer=lastProb+","+EliminateNum+","+JoinNum;
 
 
@@ -160,22 +109,22 @@ public class VarElim {
 	}
 
 
-	public static CPT Join(ArrayList <CPT> vec , CPT tempKill,boolean haveParent ,boolean haveChild ) {
-		ifChange=false;
+	public static CPT Join(ArrayList <CPT> vec , String tempKill,boolean haveParent ,boolean haveChild ) {
+		vec=sortByLine(vec);
 		CPT newTemp=new CPT();
 		if ( haveChild) {
 			if (vec.size()>1) {
 				for (int i=0;i<vec.size();i++) {
 					for (int j=i+1;j<vec.size();j++) {
-						ifChange=false;
-						newTemp=Join2Tables(vec.get(i), vec.get(j), tempKill.Name ,ifChange);
-						if (ifChange) {
-							vec.remove(i);
+						newTemp=Join2Tables(vec.get(i), vec.get(j), tempKill);
+						if (vec.get(i).lines.size()>vec.get(j).lines.size()) {
 							vec.remove(j);
 							j--;
+						}
+						else {
+							vec.remove(i);	
 							i--;
 						}
-						ifChange=false;
 					}
 				}
 			}
@@ -183,15 +132,12 @@ public class VarElim {
 				newTemp=new CPT (vec.get(0));
 
 			}
-			newTemp=JoinKillCPT(tempKill, newTemp);
-
-
 		}
 		return newTemp;
 	}
 
 
-	public static CPT Join2Tables(CPT A, CPT B ,String NameToKill , boolean ifChange) {
+	public static CPT Join2Tables(CPT A, CPT B ,String NameToKill ) {
 		if (A.lines.isEmpty() || B.lines.isEmpty()) {
 			if (A.lines.isEmpty()) {return B;}
 			if (B.lines.isEmpty()) {return A;}
@@ -205,6 +151,7 @@ public class VarElim {
 							if (A.lines.get(i).parents.parents_names.get(k).contains(NameToKill) && B.lines.get(j).parents.parents_names.get(z).contains(NameToKill)) {
 								if (A.lines.get(i).parents.parents_values.get(k).contains(B.lines.get(j).parents.parents_values.get(z))){
 									A.lines.get(i).prob*=B.lines.get(j).prob;
+
 									ifChange=true;
 									JoinNum++;
 								}
@@ -223,7 +170,9 @@ public class VarElim {
 						for (int z=0;z<B.lines.get(j).parents.parents_names.size();z++) {
 							if (A.lines.get(i).parents.parents_names.get(k).contains(NameToKill) && B.lines.get(j).parents.parents_names.get(z).contains(NameToKill)) {
 								if (A.lines.get(i).parents.parents_values.get(k).contains(B.lines.get(j).parents.parents_values.get(z))){
+
 									B.lines.get(j).prob*=A.lines.get(i).prob;
+
 									ifChange=true;
 									JoinNum++;
 								}
@@ -236,92 +185,43 @@ public class VarElim {
 		return B;
 	}
 
-	public static CPT JoinKillCPT(CPT tempKill,CPT table) {
-		if (tempKill.lines.isEmpty() || table.lines.isEmpty()) {
-			if (tempKill.lines.isEmpty()) {return tempKill;}
-			if (table.lines.isEmpty()) {return table;}
-		}
-		if (tempKill.lines.get(0).parents.parents_names.size()>table.lines.get(0).parents.parents_names.size()) {
-			for(int j=0;j<table.lines.size();j++) {
-				for (int z=0;z<table.lines.get(j).parents.parents_names.size();z++) {
-					if (tempKill.Name.contains(table.lines.get(j).parents.parents_names.get(z))) {
-						for (int k=0;k<tempKill.lines.size();k++) {
-							if (tempKill.lines.get(k).Value.contains(table.lines.get(j).parents.parents_values.get(z))){
-								tempKill.lines.get(k).prob*=table.lines.get(j).prob;
-								JoinNum++;}
-						}
-					}
-				}
-			}
-			return tempKill;
-		}
-		else {
-			for(int j=0;j<table.lines.size();j++) {
-				for (int z=0;z<table.lines.get(j).parents.parents_names.size();z++) {
-					if (tempKill.Name.contains(table.lines.get(j).parents.parents_names.get(z))) {
-						for (int k=0;k<tempKill.lines.size();k++) {
-							if (tempKill.lines.get(k).Value.contains(table.lines.get(j).parents.parents_values.get(z))){
-								table.lines.get(j).prob*=tempKill.lines.get(k).prob;
-								JoinNum++;}
-						}
-					}
-				}
-			}
-
-		}
-		return table;
-	}
-
-
-
-
+	
+	
+	
+	
 	public static CPT Eliminate(CPT AfterJoin ,String tempKill) {
-
-		if (AfterJoin.Name.contains(tempKill)) {
-
-
-			for (int i=0;i<AfterJoin.lines.size();i++) {
-				for (int j=i+1;j<AfterJoin.lines.size();j++) {
-					boolean compare=CompareLine1(AfterJoin.lines.get(i),AfterJoin.lines.get(j));
-					if (compare) {
-						AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
-						EliminateNum++;
-						AfterJoin.lines.get(i).Value="";
-						AfterJoin.lines.remove(j);
-						j--;
-
-					}		
+		
+		for (int i=0;i<AfterJoin.lines.size();i++) {
+			for (int j=i+1;j<AfterJoin.lines.size();j++) {
+				boolean compare=CompareLine2(AfterJoin.lines.get(i),AfterJoin.lines.get(j),tempKill );
+				if (compare) {
+					AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
+					EliminateNum++;
+					AfterJoin.lines.remove(j);
+					j--;
+					AfterJoin.lines.get(i).KillName(tempKill);
+				
 				}
 			}
-			AfterJoin.Name="";
 		}
-		else {
-			for (int i=0;i<AfterJoin.lines.size();i++) {
-				for (int j=i+1;j<AfterJoin.lines.size();j++) {
-					boolean compare=CompareLine2(AfterJoin.lines.get(i),AfterJoin.lines.get(j),tempKill);
-					if (compare) {
-						AfterJoin.lines.get(i).prob+=AfterJoin.lines.get(j).prob;
-						AfterJoin.lines.get(i).Value="";
-						AfterJoin.lines.remove(j);
-						EliminateNum++;
-						j--;
-
-					}		
-				}
-			}
-			AfterJoin.Name="";
-		}
-
-		return AfterJoin;}
-
-	public static boolean CompareLine1 (LineCPT a ,LineCPT b) {
-		for (int i=0;i<a.parents.parents_values.size();i++) {
-			if (!a.parents.parents_values.get(i).contains(b.parents.parents_values.get(i))) {
-				return false;
-			}
-		}
-		return true;
+		return AfterJoin;
 	}
+	
+	public  LineCPT KillName (LineCPT a , String tempKill) {
+		LineCPT temp= new LineCPT();
+		for (int i=0;i<a.parents.parents_names.size();i++) {
+			if (a.parents.parents_names.get(i).contains(tempKill)) {
+				a.parents.parents_names.remove(i);
+				a.parents.parents_values.remove(i);
+				i=0;
+			}
+		}
+		
+	return temp;	
+	}
+	
+
+
 
 	public static boolean CompareLine2 (LineCPT a ,LineCPT b ,String KillName) {
 		for (int i=0;i<a.parents.parents_values.size();i++) {
@@ -342,7 +242,6 @@ public class VarElim {
 			x+=last.lines.get(i).prob;
 			EliminateNum++;
 		}
-		System.out.println(x);
 		if (x!=0) {
 			x=1/x;
 		}
@@ -350,6 +249,33 @@ public class VarElim {
 			last.lines.get(i).prob*=x;
 		}
 
+	}
+
+	public static ArrayList <CPT> sortByLine    (ArrayList <CPT> vec){
+		for (int i=0;i<vec.size();i++) {
+			for (int j=i+1;j<vec.size();j++) {
+			boolean first=compareLineSize(vec.get(i),vec.get(j));
+			if (!first) {
+				CPT temp =vec.get(i);
+				vec.remove(i);
+				vec.add(temp);
+				i=0;
+				j=0;
+			}
+
+			
+			}
+		}
+		
+		
+		
+		return vec;
+	}
+	
+	
+	public static boolean compareLineSize(CPT a , CPT b) {
+		if (a.lines.size()>b.lines.size()) {	return false;}
+		return true;	
 	}
 
 }

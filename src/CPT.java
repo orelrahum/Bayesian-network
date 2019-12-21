@@ -44,6 +44,17 @@ class LineCPT {
 		//System.out.print(",");
 		System.out.print(prob);
 	}
+	
+	
+	public  void KillName (String tempKill) {
+		for (int i=0;i<this.parents.parents_names.size();i++) {
+			if (this.parents.parents_names.get(i).contains(tempKill)) {
+				this.parents.parents_names.remove(i);
+				this.parents.parents_values.remove(i);
+				i=0;
+			}
+		}	
+	}
 }
 
 class ParentsCPT{
