@@ -101,6 +101,47 @@ public class VarElim {
 			WhatToKill.remove(0);
 			CPT_vec_temp.clear();
 		}
+		
+		
+		int NameIndex=Net.findByName(Name);
+		boolean haveParent=false;
+		boolean haveChild=false;
+		if (Net.Vars.get(NameIndex).parents.size()>0) {
+			haveParent=true;
+
+		}
+		if (Net.Vars.get(NameIndex).children.size()>0) {
+			haveChild=true;
+		}
+		CPT AfterJoin=Join(CPT_vec , Name , haveParent ,haveChild );
+		System.out.println("its after the join :");
+		System.out.println();
+		AfterJoin.print();
+		Normalize(AfterJoin);
+		System.out.println("after normalize :");
+		AfterJoin.print();
+		System.out.println("we used "+JoinNum+" Joins");
+		System.out.println("we used "+EliminateNum+" Eliminate");
+		if (AfterJoin.Name.contains(Name)){
+			for(int i=0;i<AfterJoin.lines.size();i++) {
+				if (AfterJoin.lines.get(i).Value.contains(Value)) {
+					AfterJoin.lines.get(i).prob=General.round(AfterJoin.lines.get(i).prob);
+					lastProb=AfterJoin.lines.get(i).prob;
+				}
+			}
+		}
+		if (!AfterJoin.Name.contains(Name)){
+			for(int i=0;i<AfterJoin.lines.size();i++) {
+				for(int j=0;j<AfterJoin.lines.get(i).parents.parents_names.size();j++) {
+					if (AfterJoin.lines.get(i).parents.parents_names.get(j).contains(Name)) {
+						if (AfterJoin.lines.get(i).parents.parents_values.get(j).contains(Value)) {
+							AfterJoin.lines.get(i).prob=General.round(AfterJoin.lines.get(i).prob);
+							lastProb=AfterJoin.lines.get(i).prob;
+						}
+					}
+				}
+			}
+		}
 
 		Answer=lastProb+","+EliminateNum+","+JoinNum;
 
