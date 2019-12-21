@@ -153,7 +153,7 @@ public class VarElim {
 	public static CPT Join(ArrayList <CPT> vec , String tempKill,boolean haveParent ,boolean haveChild ) {
 		vec=sortByLine(vec);
 		CPT newTemp=new CPT();
-		if ( haveChild) {
+//		if ( haveChild) {
 			if (vec.size()>1) {
 				for (int i=0;i<vec.size();i++) {
 					for (int j=i+1;j<vec.size();j++) {
@@ -173,7 +173,7 @@ public class VarElim {
 				newTemp=new CPT (vec.get(0));
 
 			}
-		}
+//		}
 		return newTemp;
 	}
 
