@@ -71,6 +71,8 @@ public class VarElim {
 				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
 					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).contains(KillNow)) {
 						CPT_vec_temp.add(CPT_vec.get(i));
+						System.out.println("we need kill now this prob!!!!!");
+						CPT_vec.get(i).print();
 						CPT_vec.remove(i);
 						i--;
 					}
@@ -144,8 +146,8 @@ public class VarElim {
 		}
 
 		Answer=lastProb+","+EliminateNum+","+JoinNum;
-
-
+		System.out.println("final :"+ Answer);
+		System.out.println("*************************************************************************************************************");
 		return Answer;
 	}
 
@@ -169,7 +171,7 @@ public class VarElim {
 					}
 				}
 			}
-			else {
+			else if (vec.size()>0) {
 				newTemp=new CPT (vec.get(0));
 
 			}

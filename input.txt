@@ -41,4 +41,4 @@ B-E|
 B-E|J=true
 P(B=true|J=true,M=true),A-E
 P(B=true|J=true,M=true),E-A
-
+P(J=true|B=true),A-E-M
