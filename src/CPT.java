@@ -19,7 +19,49 @@ public class CPT {
 			System.out.println("");
 		}
 	}
+
+
+
+	public void combine2CPT ( CPT b) {
+
+		for (int i=0;i<this.lines.get(0).parents.parents_names.size();i++) {
+			for (int j=0;j<b.lines.get(0).parents.parents_names.size();j++) {
+				if (!this.lines.get(0).parents.parents_names.get(i).equals(b.lines.get(0).parents.parents_names.get(j))) {
+					boolean check=checkIfWeHve(this, b.lines.get(0).parents.parents_names.get(j));
+					if (check) {
+						for (int t=0;t<this.lines.size();t++) {
+							this.lines.get(t).parents.parents_names.add(b.lines.get(0).parents.parents_names.get(j));
+							this.lines.get(t).parents.parents_values.add(b.lines.get(0).parents.parents_values.get(j));	
+
+						}
+						
+						j=0;
+						i=0;
+					}
+				}
+				
+			}
+		}
+
+	}
+
+	
+
+	public static boolean checkIfWeHve (CPT a , String Name) {
+		for (int i=0;i<a.lines.get(0).parents.parents_names.size();i++) {
+			if (a.lines.get(0).parents.parents_names.get(i).contains(Name)) {
+				return false;
+			}
+		}
+
+
+		return true;
+	}
 }
+
+
+
+
 
 class LineCPT {
 	ParentsCPT parents=new ParentsCPT();
@@ -44,8 +86,8 @@ class LineCPT {
 		//System.out.print(",");
 		System.out.print(prob);
 	}
-	
-	
+
+
 	public  void KillName (String tempKill) {
 		for (int i=0;i<this.parents.parents_names.size();i++) {
 			if (this.parents.parents_names.get(i).contains(tempKill)) {
