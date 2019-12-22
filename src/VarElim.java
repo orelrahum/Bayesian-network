@@ -58,10 +58,16 @@ public class VarElim {
 				for (int z=0;z<CPT_vec.get(j).lines.size();z++) {
 					for (int g=0;g<CPT_vec.get(j).lines.get(z).parents.parents_names.size();g++) {
 						if (CPT_vec.get(j).lines.get(z).parents.parents_names.get(g).equals(given_the_name.get(i))) {
-
-							int ind=Net.findByName((given_the_name.get(i)));
 							if (!CPT_vec.get(j).lines.get(z).parents.parents_values.get(g).equals(given_the_value.get(i))) {
+								
 								CPT_vec.get(j).lines.remove(z);
+								z=0;
+								g=0;
+								j=0;
+
+							}
+							else if (CPT_vec.get(j).lines.get(z).parents.parents_values.get(g).equals(given_the_value.get(i))) {
+								CPT_vec.get(j).lines.get(z).KillName(given_the_name.get(i));
 								z=0;
 								g=0;
 								j=0;
@@ -82,18 +88,7 @@ public class VarElim {
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++) {
-				System.out.println();
-				System.out.println();
-				System.out.println();
-				CPT_vec.get(i).print();
-				System.out.println(CPT_vec.size());
-				System.out.println();
-				System.out.println();
-				System.out.println();
 				if (!CPT_vec.get(i).lines.isEmpty() && !CPT_vec.get(i).lines.get(0).parents.parents_names.isEmpty() && CPT_vec.get(i).lines.get(0).parents.parents_names.size()>0  ) {
-					System.out.println(KillNow);
-					System.out.println("igvfnjsdlfmvs;dv,ds;lo,vds[");
-					
 					for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
 						if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).equals(KillNow)) {
 							CPT_vec_temp.add(CPT_vec.get(i));
@@ -191,7 +186,7 @@ public class VarElim {
 		if (vec.size()>1) {
 			for (int i=0;i<vec.size();i++) {
 				for (int j=i+1;j<vec.size();j++) {
-					vec.get(j).combine2CPT(vec.get(i));
+					//vec.get(j).combine2CPT(vec.get(i));
 					System.out.println("its before number 1!!!!");
 					vec.get(i).print();
 
@@ -234,6 +229,7 @@ public class VarElim {
 						for (int z=0;z<B.lines.get(j).parents.parents_names.size();z++) {
 							if (A.lines.get(i).parents.parents_names.get(k).equals(NameToKill) && B.lines.get(j).parents.parents_names.get(z).equals(NameToKill)) {
 								if (A.lines.get(i).parents.parents_values.get(k).equals(B.lines.get(j).parents.parents_values.get(z))){
+									
 									A.lines.get(i).prob*=B.lines.get(j).prob;
 									JoinNum++;
 								}
@@ -289,18 +285,7 @@ public class VarElim {
 		return AfterJoin;
 	}
 
-	public  LineCPT KillName (LineCPT a , String tempKill) {
-		LineCPT temp= new LineCPT();
-		for (int i=0;i<a.parents.parents_names.size();i++) {
-			if (a.parents.parents_names.get(i).equals(tempKill)) {
-				a.parents.parents_names.remove(i);
-				a.parents.parents_values.remove(i);
-				i=0;
-			}
-		}
 
-		return temp;	
-	}
 
 
 
