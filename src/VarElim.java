@@ -24,6 +24,7 @@ public class VarElim {
 		Temp=Temp.substring(2);
 		String secondSplit[]=Temp.split("=");
 		String Name=new String(secondSplit[0]);
+		System.out.println("the name is!!!" + Name);
 		String Value=new String (secondSplit[1]);
 		if (firstSplit.length>1) {
 			String Temp2=new String (firstSplit[1]);
@@ -40,6 +41,7 @@ public class VarElim {
 					Temp4=Temp4.substring(1);
 					String ThirdSplit[]=Temp4.split("-");
 					for (int i=0;i<ThirdSplit.length;i++) {
+						System.out.println("wooooo areeee heheher"+ThirdSplit[i]);
 						WhatToKill.add(ThirdSplit[i]);
 					}
 				}
@@ -56,14 +58,14 @@ public class VarElim {
 				for (int z=0;z<CPT_vec.get(j).lines.size();z++) {
 					for (int g=0;g<CPT_vec.get(j).lines.get(z).parents.parents_names.size();g++) {
 						if (CPT_vec.get(j).lines.get(z).parents.parents_names.get(g).equals(given_the_name.get(i))) {
-							
+
 							int ind=Net.findByName((given_the_name.get(i)));
-								if (!CPT_vec.get(j).lines.get(z).parents.parents_values.get(g).equals(given_the_value.get(i))) {
-									CPT_vec.get(j).lines.remove(z);
-									z=0;
-									g=0;
-									j=0;
-								
+							if (!CPT_vec.get(j).lines.get(z).parents.parents_values.get(g).equals(given_the_value.get(i))) {
+								CPT_vec.get(j).lines.remove(z);
+								z=0;
+								g=0;
+								j=0;
+
 							}
 						}
 					}
@@ -71,17 +73,33 @@ public class VarElim {
 			}
 
 		}
+		for (int i=0;i<WhatToKill.size();i++) {
+			System.out.println(WhatToKill.get(i));
+		}
 
 		while(WhatToKill.size()>0) {
 			ifChange=true;
 			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
 			String KillNow=WhatToKill.get(0);
 			for (int i=0;i<CPT_vec.size();i++) {
-				for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
-					if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).equals(KillNow)) {
-						CPT_vec_temp.add(CPT_vec.get(i));
-						CPT_vec.remove(i);
-						i--;
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				CPT_vec.get(i).print();
+				System.out.println(CPT_vec.size());
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				if (!CPT_vec.get(i).lines.isEmpty() && !CPT_vec.get(i).lines.get(0).parents.parents_names.isEmpty() && CPT_vec.get(i).lines.get(0).parents.parents_names.size()>0  ) {
+					System.out.println(KillNow);
+					System.out.println("igvfnjsdlfmvs;dv,ds;lo,vds[");
+					
+					for (int j=0;j<CPT_vec.get(i).lines.get(0).parents.parents_names.size();j++) {
+						if (CPT_vec.get(i).lines.get(0).parents.parents_names.get(j).equals(KillNow)) {
+							CPT_vec_temp.add(CPT_vec.get(i));
+							CPT_vec.remove(i);
+							i--;
+						}
 					}
 				}
 			}
