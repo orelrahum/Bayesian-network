@@ -66,41 +66,41 @@ public class readfile {
 							line=br.readLine();
 							while(line.length()>1) {
 								LineCPT tempLine=new LineCPT();
-								ParentsCPT tempParents=new ParentsCPT();
 								if (line.contains(",")) {
 									String CTPtemp  []=line.split(",");
 									int j=0;
 									double sumProb=0;
 									for(int i=0;i<Net.Vars.get(index).parents.size();i++) {
 										String ParentName=Net.Vars.get(index).parents.get(i).name;
-										tempParents.parents_names.add(ParentName);
-										tempParents.parents_values.add(CTPtemp[i]);
+										tempLine.Var_name.add(ParentName);
+										tempLine.Var_value.add(CTPtemp[i]);
 										j++;
 									}
 									j=(j+1);
 									for(int i=0;i<Net.Vars.get(index).values.size()-1;i++) {
-										ParentsCPT tempParents2=new ParentsCPT(tempParents);
-									
+										LineCPT tempLine2=new LineCPT(tempLine);
 										String ValueName=Net.Vars.get(index).values.get(i);
 										double ProbForVar=Double.parseDouble(CTPtemp[j]);
-										tempParents2.parents_names.add(Net.Vars.get(index).name);
-										tempParents2.parents_values.add(ValueName);
+										tempLine2.Var_name.add(Net.Vars.get(index).name);
+										tempLine2.Var_value.add(ValueName);
+										tempLine2.prob=ProbForVar;
 										sumProb+=ProbForVar;
-										tempLine=new LineCPT(tempParents2, ValueName, ProbForVar);
-										Net.Vars.get(index).cpt.lines.add(tempLine);
+										Net.Vars.get(index).cpt.lines.add(tempLine2);
 										j=j+2;
 									}
+									LineCPT tempLine3=new LineCPT(tempLine);
 									double comp=1-sumProb;
 									double sumOfValues=Net.Vars.get(index).values.size();
 									String LastValueName=Net.Vars.get(index).values.get((int)sumOfValues-1);
-									tempParents.parents_names.add(Net.Vars.get(index).name);
-									tempParents.parents_values.add(LastValueName);
-									tempLine=new LineCPT(tempParents ,LastValueName,comp);
-									Net.Vars.get(index).cpt.lines.add(tempLine);
+									tempLine3.Var_name.add(Net.Vars.get(index).name);
+									tempLine3.Var_value.add(LastValueName);
+									tempLine3.prob=comp;
+									Net.Vars.get(index).cpt.lines.add(tempLine3);
 								}
 								line=br.readLine();
 							}
 							Net.Vars.get(index).cpt.Name=Net.Vars.get(index).name;
+							Net.Vars.get(index).cpt.sortByValName();
 						}
 
 					}
