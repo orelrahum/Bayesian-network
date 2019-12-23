@@ -76,8 +76,14 @@ public class VarElim {
 			}
 
 		}
-		for (int i=0;i<WhatToKill.size();i++) {
-		}
+//		for (int i=0;i<WhatToKill.size();i++) {
+//			for (int j=0;j<CPT_vec.size();j++) {
+//			boolean find=checkIfweHave(CPT_vec.get(j).lines.get(0), WhatToKill.get(i));
+//					
+//					
+//			}
+//			
+//		}
 
 		while(WhatToKill.size()>0) {
 			ifChange=true;
@@ -131,7 +137,18 @@ public class VarElim {
 			haveChild=true;
 		}
 		if (ifChange) {
-			CPT AfterJoin=Join(CPT_vec , Name , haveParent ,haveChild );
+			ArrayList<CPT> CPT_vec_temp = new ArrayList<CPT>();
+			for (int i=0;i<CPT_vec.size();i++) {
+				if (!CPT_vec.get(i).lines.isEmpty() && !CPT_vec.get(i).lines.get(0).Var_name.isEmpty() && CPT_vec.get(i).lines.get(0).Var_name.size()>0  ) {
+					for (int j=0;j<CPT_vec.get(i).lines.get(0).Var_name.size();j++) {
+						if (CPT_vec.get(i).lines.get(0).Var_name.get(j).equals(Name)) {
+							CPT_vec_temp.add(CPT_vec.get(i));
+
+						}
+					}
+				}
+			}
+			CPT AfterJoin=Join(CPT_vec_temp , Name , haveParent ,haveChild );
 			System.out.println("its after the join :");
 			System.out.println();
 			AfterJoin.print();
@@ -177,13 +194,11 @@ public class VarElim {
 	public static CPT Join(ArrayList <CPT> vec , String tempKill,boolean haveParent ,boolean haveChild ) {
 		vec=sortByLine(vec);
 		CPT newTemp=new CPT();
-		//		if ( haveChild) {
 		if (vec.size()>1) {
 			for (int i=0;i<vec.size();i++) {
 				for (int j=i+1;j<vec.size();j++) {
 					vec.get(i).sortByValName();
 					vec.get(j).sortByValName();
-					//vec.get(j).Combine2CPT(vec.get(i));
 					System.out.println("\nits the first table!!!!");
 					vec.get(i).print();
 					System.out.println("\nits the second table!!!!");
@@ -210,7 +225,6 @@ public class VarElim {
 			newTemp=new CPT (vec.get(0));
 
 		}
-		//		}
 		return newTemp;
 	}
 
